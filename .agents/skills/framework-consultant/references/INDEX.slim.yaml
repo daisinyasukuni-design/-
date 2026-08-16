@@ -1,0 +1,709 @@
+# references/INDEX.slim.yaml — 選定専用スリムカタログ（framework-consultant の SKILL.md Step 2 が読む）
+# 【自動生成・手編集禁止】元リポジトリの build/make_slim_index.py で INDEX.yaml から生成した同梱コピー。
+# 更新するときは元リポジトリで再生成し build/package_framework_consultant.py で差し替える（直接編集しない）。
+# 必要入力・前提の詳細は各 references/frameworks/<id>/FRAMEWORK.md（「前提と限界」節）を参照。
+# 残すフィールド: id / name_ja / lens / category / purpose / fit_tags / pairs_well_with / perspective_shift。
+# purpose は80字目安で文境界切り詰め（「…」付与）、pairs_well_with は無向グラフとして対称化済み。
+# lens: analysis / ideation / decision / risk / improvement / people / perspective-shift
+# category: A_strategy=戦略 / B_marketing=マーケ / C_innovation=新規事業 / D_logic=論理 / E_divergent=発散 / F_invention=発明 / G_perspective=視点転換 / H_refine=検証・意思決定 / I_operations=業務改善 / J_organization=組織・人
+
+version: 1.0
+updated: 2026-07-08
+
+frameworks:
+  - id: swot
+    name_ja: "SWOT分析"
+    lens: analysis
+    category: A_strategy
+    purpose: "自社・事業の内部（強み・弱み）と外部環境（機会・脅威）を4象限に棚卸しし、戦略立案の起点となる戦略的位置を把握する。…"
+    fit_tags: ["現状整理", "内部と外部の一括俯瞰", "戦略立案の初手", "自社の棚卸し", "事業計画の前段", "新規事業の環境整理", "個人のキャリア棚卸し"]
+    pairs_well_with: ["3c", "4p", "ansoff", "backcasting", "core-competence", "cross-swot", "five-forces", "jtbd", "mckinsey-7s", "pest", "ppm-bcg", "premortem", "scenario-planning", "value-chain", "vrio"]
+    perspective_shift: false
+  - id: cross-swot
+    name_ja: "クロスSWOT"
+    lens: decision
+    category: A_strategy
+    purpose: "SWOTの4要素を内部×外部で掛け合わせ、SO（積極化）/ST（差別化）/WO（改善）/WT（防衛・撤退）の具体戦略に変換し、優先順位をつけて動ける打ち手にする"
+    fit_tags: ["SWOTを戦略に変える", "打ち手の具体化", "事業戦略立案", "マーケ戦略立案", "戦略の優先順位づけ", "新規事業の打ち手", "進出/差別化/撤退の判断"]
+    pairs_well_with: ["ansoff", "devils-advocate", "payoff-matrix", "pest", "premortem", "red-team", "scenario-planning", "swot", "vrio"]
+    perspective_shift: false
+  - id: pest
+    name_ja: "PEST/PESTLE分析"
+    lens: analysis
+    category: A_strategy
+    purpose: "自社が動かせないマクロ外部環境を政治/経済/社会/技術（＋法規制/環境）で走査し、機会と脅威の源泉を漏れなく洗い出して戦略の前提を作る"
+    fit_tags: ["外部環境整理", "マクロトレンド棚卸し", "新規事業/参入前の環境把握", "SWOTの外部側の入力", "規制/技術変化の点検", "中期計画の前提整理"]
+    pairs_well_with: ["3c", "ansoff", "backcasting", "cross-swot", "devils-advocate", "five-forces", "premortem", "scenario-planning", "swot", "value-chain", "vrio"]
+    perspective_shift: false
+  - id: 3c
+    name_ja: "3C分析"
+    lens: analysis
+    category: A_strategy
+    purpose: "市場・顧客/競合/自社の3視点を事実で突き合わせ、勝ち筋となるKSF（重要成功要因）を特定して戦略の起点を作る"
+    fit_tags: ["競合環境の整理", "顧客ニーズの把握", "自社の勝ち筋・強みの特定", "新規事業・新市場参入の検討", "マーケ戦略・事業計画の初手", "KSFの発見", "売上低迷の要因分析"]
+    pairs_well_with: ["4p", "ansoff", "business-model-canvas", "core-competence", "devils-advocate", "five-forces", "mece", "pest", "ppm-bcg", "premortem", "stp", "swot", "value-chain", "vrio"]
+    perspective_shift: false
+  - id: five-forces
+    name_ja: "5フォース分析"
+    lens: analysis
+    category: A_strategy
+    purpose: "業界を取り巻く5つの競争圧力を構造分析し、業界の魅力度（収益性）と収益を圧迫する構造要因を特定して打ち手に接続する"
+    fit_tags: ["業界構造分析", "競合環境の整理", "参入/撤退の判断", "収益性・魅力度診断", "外部環境分析", "価格決定力の分析"]
+    pairs_well_with: ["3c", "ansoff", "blue-ocean", "business-model-canvas", "jtbd", "market-sizing", "pest", "ppm-bcg", "red-team", "scenario-planning", "swot", "value-chain", "vrio"]
+    perspective_shift: false
+  - id: value-chain
+    name_ja: "バリューチェーン分析"
+    lens: analysis
+    category: A_strategy
+    purpose: "事業を主活動・支援活動に分解し、各活動の価値とコストを可視化して競争優位（コスト優位/差別化優位）の源泉を突き止め、強化・投資集中・外注・削減の打ち手に繋げる"
+    fit_tags: ["自社の強みの所在特定", "コスト構造の可視化", "内製外注の判断", "投資集中先の決定", "差別化の源泉探索", "利益率劣位の分解"]
+    pairs_well_with: ["3c", "core-competence", "ecrs", "five-forces", "pest", "reverse-assumption", "swot", "vrio"]
+    perspective_shift: false
+  - id: vrio
+    name_ja: "VRIO分析"
+    lens: analysis
+    category: A_strategy
+    purpose: "自社の経営資源・能力を価値/希少性/模倣困難性/組織の4基準で評価し、持続的競争優位の源泉になるかを判定する"
+    fit_tags: ["自社の強み特定", "競争優位の源泉", "強みの検証", "経営資源の評価", "投資/防御の優先順位づけ", "M&A・獲得資源の評価", "差別化の源泉探し"]
+    pairs_well_with: ["3c", "ansoff", "business-model-canvas", "core-competence", "cross-swot", "devils-advocate", "five-forces", "pest", "ppm-bcg", "premortem", "swot", "value-chain"]
+    perspective_shift: false
+  - id: core-competence
+    name_ja: "コアコンピタンス分析"
+    lens: analysis
+    category: A_strategy
+    purpose: "自社の競争優位の源泉となる中核的な能力（製品でなく技術・スキル・組織的学習の束）を3条件（顧客価値/模倣困難/複数市場展開）で特定し、能力→コア製品→最終製品の…"
+    fit_tags: ["自社の強みの言語化", "中核能力の特定", "新規事業の軸探し", "投資/内製の集中先の決定", "外部化・撤退の線引き"]
+    pairs_well_with: ["3c", "ansoff", "devils-advocate", "jtbd", "premortem", "swot", "value-chain", "vrio"]
+    perspective_shift: false
+  - id: ansoff
+    name_ja: "アンゾフの成長マトリクス"
+    lens: decision
+    category: A_strategy
+    purpose: "成長戦略を製品(既存/新規)×市場(既存/新規)の4象限に配置し、各象限のリスク階段を可視化して「成長の方向とどこに資源を賭けるか」を決める"
+    fit_tags: ["成長戦略の方向づけ", "新規事業・多角化の検討", "既存深掘りvs新規開拓の判断", "海外・新セグメント参入", "成長オプションの比較・優先順位"]
+    pairs_well_with: ["3c", "core-competence", "cross-swot", "devils-advocate", "five-forces", "jtbd", "pest", "ppm-bcg", "premortem", "red-team", "scenario-planning", "swot", "vrio"]
+    perspective_shift: false
+  - id: ppm-bcg
+    name_ja: "PPM（BCGマトリクス）"
+    lens: decision
+    category: A_strategy
+    purpose: "複数事業・複数製品を「市場成長率×相対的市場シェア」の2軸で花形/金のなる木/問題児/負け犬の4象限に分類し、限られた経営資源の配分＝選択と集中（投資・維持・収…"
+    fit_tags: ["事業ポートフォリオ", "選択と集中", "資源配分", "撤退・売却判断", "投資優先順位づけ", "多角化事業の整理", "予算配分"]
+    pairs_well_with: ["3c", "ansoff", "decision-matrix", "devils-advocate", "five-forces", "jtbd", "payoff-matrix", "premortem", "red-team", "swot", "vrio"]
+    perspective_shift: false
+  - id: backcasting
+    name_ja: "バックキャスティング"
+    lens: perspective-shift
+    category: A_strategy
+    purpose: "ありたい未来（望ましい終点）を先に定義し、現在へ逆算して非連続な変革の道筋（マイルストーン）と今の一手を導く。…"
+    fit_tags: ["長期ビジョンの逆算", "非連続変革のロードマップ", "脱炭素/DX/新規事業など野心的目標", "現状延長では届かない目標", "制約を外した理想からの発想", "ビジョンを打ち手に落とす", "キャリアビジョンの逆算"]
+    pairs_well_with: ["change-management", "kgi-kpi-okr", "logic-tree", "mckinsey-7s", "ooda", "pest", "premortem", "red-team", "reverse-assumption", "scenario-planning", "stakeholder-analysis", "swot"]
+    perspective_shift: true
+  - id: scenario-planning
+    name_ja: "シナリオプランニング"
+    lens: risk
+    category: A_strategy
+    purpose: "コントロールできない重要不確実性を2軸に取り、対極の組み合わせから複数の一貫した未来（典型は4つ）を物語として構成し、どの未来でも破綻しない頑健戦略・no-re…"
+    fit_tags: ["先が読めない長期の意思決定", "不確実性が高くて計画が立たない", "大型投資・撤退・新規参入の判断", "複数の未来に備えたい", "規制・技術の分岐への備え", "楽観と悲観で議論が噛み合わない"]
+    pairs_well_with: ["ansoff", "backcasting", "cross-swot", "cynefin", "decision-tree", "devils-advocate", "five-forces", "pest", "premortem", "reverse-assumption", "swot"]
+    perspective_shift: true
+  - id: blue-ocean
+    name_ja: "ブルーオーシャン戦略"
+    lens: ideation
+    category: A_strategy
+    purpose: "業界が競争・投資してきた要因を戦略キャンバスで可視化し、ERRC（取り除く/減らす/増やす/付け加える）で新しい価値曲線を描いて、差別化と低コストを同時に実現す…"
+    fit_tags: ["価格競争からの脱却", "レッドオーシャンから抜け出したい", "新市場・カテゴリーの創造", "業界の当たり前を疑う", "非顧客の取り込み", "差別化と低コストの両立", "値下げしない独自ポジション"]
+    pairs_well_with: ["business-model-canvas", "five-forces", "jtbd", "persona", "premortem", "reverse-assumption", "stp", "value-proposition-canvas"]
+    perspective_shift: false
+  - id: 4p
+    name_ja: "4P"
+    lens: analysis
+    category: B_marketing
+    purpose: "STPで決めた戦略をProduct/Price/Place/Promotionの具体施策へ翻訳し、4つの打ち手がターゲットとポジショニングに一貫して整合している…"
+    fit_tags: ["マーケ施策の実行設計", "売り方の具体化", "施策の整合性診断", "競合の打ち手の分解・比較", "STPの後工程"]
+    pairs_well_with: ["3c", "4c-marketing", "customer-journey", "devils-advocate", "persona", "premortem", "purchase-behavior", "stp", "swot"]
+    perspective_shift: false
+  - id: 4c-marketing
+    name_ja: "4C"
+    lens: analysis
+    category: B_marketing
+    purpose: "マーケティング施策を買い手（顧客）視点の4要素（顧客価値・顧客コスト・利便性・双方向コミュニケーション）で捉え直し、売り手目線とのズレを見つけて施策を組み替える"
+    fit_tags: ["顧客視点の点検", "マーケ施策の見直し", "4Pの棚卸し", "顧客中心設計", "非金銭コストの洗い出し", "買いやすさ・伝わり方の改善"]
+    pairs_well_with: ["4p", "customer-journey", "jtbd", "persona", "stp", "value-proposition-canvas"]
+    perspective_shift: false
+  - id: stp
+    name_ja: "STP"
+    lens: analysis
+    category: B_marketing
+    purpose: "市場を同質なニーズの集団に細分化し、勝てて儲かる標的を選び、競合と差別化した『顧客の頭の中での立ち位置』を1本の筋で設計する（誰に・どんな価値で戦うかを決める）"
+    fit_tags: ["ターゲット設定", "市場細分化", "差別化・ポジショニング", "マーケ戦略の軸決め", "新商品の投入先選定", "訴求が刺さらない"]
+    pairs_well_with: ["3c", "4c-marketing", "4p", "blue-ocean", "customer-journey", "devils-advocate", "jtbd", "market-sizing", "persona", "premortem", "purchase-behavior", "rfm", "value-proposition-canvas"]
+    perspective_shift: false
+  - id: purchase-behavior
+    name_ja: "AIDMA/AISAS"
+    lens: analysis
+    category: B_marketing
+    purpose: "顧客の認知→購買→共有プロセスを段階に分解し、各段階にKPIと施策を割り当てて、離脱しているボトルネック段階を特定・改善する"
+    fit_tags: ["購買プロセス可視化", "ボトルネック特定", "認知はあるが売れない", "マーケ施策の段階設計", "流入経路別のコミュニケーション設計", "チームの共通言語"]
+    pairs_well_with: ["4p", "aarrr", "customer-journey", "persona", "premortem", "rfm", "stp"]
+    perspective_shift: false
+  - id: customer-journey
+    name_ja: "カスタマージャーニーマップ"
+    lens: analysis
+    category: B_marketing
+    purpose: "顧客が目標を達成するまでの体験を時間軸で可視化し、行動・思考・感情・タッチポイントを並べて痛点と改善機会を特定する"
+    fit_tags: ["顧客体験改善", "離脱・離反の特定", "タッチポイント棚卸し", "オンボーディング/購入プロセスの摩擦", "感情の見える化", "部門横断の合意形成"]
+    pairs_well_with: ["4c-marketing", "4p", "aarrr", "business-model-canvas", "design-thinking", "jtbd", "persona", "purchase-behavior", "reverse-assumption", "service-blueprint", "stp", "value-proposition-canvas"]
+    perspective_shift: false
+  - id: persona
+    name_ja: "ペルソナ"
+    lens: analysis
+    category: B_marketing
+    purpose: "抽象的な顧客層を、調査に裏打ちされた「実在する1人の人物像」に翻訳し、『誰のために作るか』のチーム共通の意思決定基準を作る"
+    fit_tags: ["顧客像の具体化", "訴求・チャネルの判断軸", "社内の顧客認識の統一", "新規事業の顧客像", "顧客中心の意思決定"]
+    pairs_well_with: ["4c-marketing", "4p", "blue-ocean", "customer-journey", "design-thinking", "jtbd", "kano", "lean-canvas", "maslow", "purchase-behavior", "reverse-assumption", "rfm", "service-blueprint", "stp", "value-proposition-canvas"]
+    perspective_shift: false
+  - id: rfm
+    name_ja: "RFM分析"
+    lens: analysis
+    category: B_marketing
+    purpose: "既存顧客を直近性(R)・頻度(F)・金額(M)の3指標でスコア化しセグメント分けし、販促・維持の優先順位を決める"
+    fit_tags: ["顧客分類・ランク付け", "優良顧客/VIPの発見", "離反防止・ウィンバック対象抽出", "休眠顧客の掘り起こし", "販促予算の配分", "CRM/EC顧客理解の初手"]
+    pairs_well_with: ["aarrr", "decision-matrix", "jtbd", "persona", "premortem", "purchase-behavior", "stp", "unit-economics"]
+    perspective_shift: false
+  - id: aarrr
+    name_ja: "AARRR（海賊指標）／ノーススターメトリック"
+    lens: analysis
+    category: B_marketing
+    purpose: "プロダクトの成長を獲得・活性化・継続・紹介・収益の5段で計測し、段ごとの転換率から最弱のボトルネックを1つ特定して集中改善する。…"
+    fit_tags: ["追う指標が多すぎて絞れない", "KPIがバラバラでチームの向きが揃わない", "獲得はできるのに定着・収益化しない", "成長のボトルネック特定", "北極星にする指標を1つ決めたい", "グロース施策の優先順位づけ"]
+    pairs_well_with: ["customer-journey", "devils-advocate", "kgi-kpi-okr", "kpt", "lean-startup-mvp", "premortem", "purchase-behavior", "rfm", "service-blueprint", "unit-economics"]
+    perspective_shift: false
+  - id: service-blueprint
+    name_ja: "サービスブループリント"
+    lens: analysis
+    category: B_marketing
+    purpose: "ひとつのサービス体験を「物的証拠／顧客行動／フロントステージ（見える従業員行動）／バックステージ（見えない従業員行動）／支援プロセス」の5層に分解し、可視線・相…"
+    fit_tags: ["顧客体験を裏側の業務と突き合わせて直したい", "どこで体験が崩れるのか原因を特定したい", "部門をまたぐサービス設計・改善", "新サービスの提供体制を設計したい", "オンボーディング・サポートの裏側の詰まりの可視化", "顧客の不満の原因工程・担当が分からない"]
+    pairs_well_with: ["aarrr", "customer-journey", "devils-advocate", "fishbone", "five-whys", "fmea", "kpt", "persona", "premortem", "value-stream-mapping"]
+    perspective_shift: false
+  - id: business-model-canvas
+    name_ja: "ビジネスモデルキャンバス"
+    lens: analysis
+    category: C_innovation
+    purpose: "事業を9要素（顧客/価値/チャネル/関係/収益/資源/活動/パートナー/コスト）に分解し1枚で全体像を可視化・診断し、要素間の整合(fit)を検算する"
+    fit_tags: ["事業構想", "全体像の可視化", "ビジネスモデルの整理", "新規事業の設計", "収益化の整理", "チームの共通言語"]
+    pairs_well_with: ["3c", "blue-ocean", "customer-journey", "devils-advocate", "five-forces", "jtbd", "lean-canvas", "market-sizing", "premortem", "red-team", "unit-economics", "value-proposition-canvas", "vrio"]
+    perspective_shift: false
+  - id: lean-canvas
+    name_ja: "リーンキャンバス"
+    lens: analysis
+    category: C_innovation
+    purpose: "新規事業・スタートアップのアイデアを9ブロックの仮説1枚に落とし、リスクの高い前提から検証の順番を決める"
+    fit_tags: ["新規事業のアイデア整理", "事業仮説の洗い出し", "検証の優先順位づけ", "課題と価値の噛み合わせ点検", "ピボット検討", "事業構想の1枚共有"]
+    pairs_well_with: ["business-model-canvas", "devils-advocate", "jtbd", "lean-startup-mvp", "market-sizing", "persona", "premortem", "unit-economics", "value-proposition-canvas"]
+    perspective_shift: false
+  - id: value-proposition-canvas
+    name_ja: "バリュープロポジションキャンバス"
+    lens: analysis
+    category: C_innovation
+    purpose: "顧客の仕事・ペイン・ゲインと自社の製品/ペインリリーバー/ゲインクリエイターを突き合わせ、提供価値が刺さっているか（フィット）と未対応領域を診断・設計する"
+    fit_tags: ["提供価値の設計", "顧客ニーズとのズレ診断", "新製品・新規事業の価値提案", "刺さらない/売れない原因究明", "訴求・キャッチコピーの言語化", "BMCの価値提案の深掘り"]
+    pairs_well_with: ["4c-marketing", "blue-ocean", "business-model-canvas", "customer-journey", "design-thinking", "devils-advocate", "jtbd", "kano", "lean-canvas", "lean-startup-mvp", "market-sizing", "persona", "stp"]
+    perspective_shift: false
+  - id: jtbd
+    name_ja: "ジョブ理論"
+    lens: ideation
+    category: C_innovation
+    purpose: "顧客が『ある状況で片付けたいジョブ（進歩）』と、旧手段を解雇し新手段を採用させる4つの力を掘り下げ、真の競合と未充足ニーズを突き止めて新規事業・製品の切り口を作…"
+    fit_tags: ["新規事業の機会発見", "顧客ニーズの深掘り", "非購入・解約・乗り換えの理解", "真の競合の再定義", "差別化の切り口づくり", "属性から動機への発想転換", "刺さらない・選ばれない原因の分析"]
+    pairs_well_with: ["4c-marketing", "abduction", "ansoff", "blue-ocean", "business-model-canvas", "core-competence", "customer-journey", "design-thinking", "five-forces", "hope-defect-listing", "kano", "kj-method", "lean-canvas", "lean-startup-mvp", "maslow", "negotiation-batna", "persona", "ppm-bcg", "premortem", "reverse-assumption", "rfm", "scamper", "stp", "swot", "value-proposition-canvas"]
+    perspective_shift: true
+  - id: design-thinking
+    name_ja: "デザイン思考"
+    lens: ideation
+    category: C_innovation
+    purpose: "ユーザーへの共感を起点に共感→定義→発想→試作→テストの5モードを反復し、人間中心（human-centered）で厄介な問題からイノベーションを生む"
+    fit_tags: ["顧客ニーズが不明", "ユーザー起点の発想", "新規サービス・製品の構想", "課題設定のやり直し", "プロトタイプで仮説検証", "厄介な問題(wicked problem)"]
+    pairs_well_with: ["brainstorming", "customer-journey", "cynefin", "devils-advocate", "jtbd", "kj-method", "lean-startup-mvp", "persona", "premortem", "reverse-assumption", "scamper", "value-proposition-canvas"]
+    perspective_shift: false
+  - id: lean-startup-mvp
+    name_ja: "リーンスタートアップ/MVP"
+    lens: decision
+    category: C_innovation
+    purpose: "新規事業・新製品の最重要な事業仮説（誰の・どの課題・いくらで）をMVPで小さく検証し、実データで継続(Persevere)かピボット(Pivot)かを決める。…"
+    fit_tags: ["新規事業の需要検証", "作る前の仮説検証", "MVP設計", "ピボット判断", "PoC/実証実験の設計", "作ったのに売れないの検証"]
+    pairs_well_with: ["aarrr", "abduction", "analogical-thinking", "cynefin", "decision-tree", "design-thinking", "devils-advocate", "jtbd", "lean-canvas", "market-sizing", "ooda", "payoff-matrix", "premortem", "unit-economics", "value-proposition-canvas"]
+    perspective_shift: false
+  - id: market-sizing
+    name_ja: "市場規模推定（TAM/SAM/SOM）"
+    lens: analysis
+    category: C_innovation
+    purpose: "狙う市場の大きさを全体(TAM)→自社が届く範囲(SAM)→現実に獲れる範囲(SOM)の3層に切り、トップダウンとボトムアップの2経路で別々に見積もって桁を突き…"
+    fit_tags: ["市場規模を知りたい", "新規事業のTAM/SAMを出す", "事業計画・ピッチの市場規模欄が埋まらない", "売上ポテンシャルの桁感がほしい", "投資家に見せる数字が盛りすぎでないか検算", "ざっくりの市場規模を概算したい"]
+    pairs_well_with: ["business-model-canvas", "devils-advocate", "five-forces", "lean-canvas", "lean-startup-mvp", "premortem", "so-what-why-so", "stp", "value-proposition-canvas"]
+    perspective_shift: false
+  - id: unit-economics
+    name_ja: "ユニットエコノミクス（LTV/CAC）"
+    lens: analysis
+    category: C_innovation
+    purpose: "事業を顧客1人（または注文1件）あたりの収益とコストに分解し、LTV/CAC比とCAC回収期間の2指標で「その1単位が黒字か＝スケールすれば儲かるモデルか」を定…"
+    fit_tags: ["スケールすれば黒字化するのか", "広告費をかけるほど赤字が増える気がする", "LTVとCACの比率の見方", "顧客獲得コストの回収期間", "サブスク/EC/SaaSの採算確認", "値上げvs解約率改善の効き比べ"]
+    pairs_well_with: ["aarrr", "business-model-canvas", "decision-matrix", "decision-tree", "devils-advocate", "kgi-kpi-okr", "lean-canvas", "lean-startup-mvp", "payoff-matrix", "premortem", "rfm"]
+    perspective_shift: false
+  - id: kano
+    name_ja: "カノモデル（狩野モデル）"
+    lens: analysis
+    category: C_innovation
+    purpose: "製品・サービスの各機能/品質要素を「充足すると満足が上がるか／欠けると不満が出るか」の非線形な効き方で魅力的/一元的/当たり前/無関心/逆の5つに分類し、何を最…"
+    fit_tags: ["機能の優先順位づけ", "何から作るか決められない", "限られた開発リソースの配分", "差別化になる機能の特定", "削っていい機能の見極め", "盛り込みすぎの機能の点検", "顧客満足を効率よく上げたい"]
+    pairs_well_with: ["decision-matrix", "devils-advocate", "hope-defect-listing", "jtbd", "kgi-kpi-okr", "payoff-matrix", "persona", "premortem", "reverse-assumption", "value-proposition-canvas"]
+    perspective_shift: false
+  - id: logic-tree
+    name_ja: "ロジックツリー"
+    lens: analysis
+    category: D_logic
+    purpose: "複雑な問題を樹形図でMECEに分解し、原因の特定・打ち手の網羅・全体像の把握・指標分解を行う。What/Why/How/KPIの4型を目的で使い分ける"
+    fit_tags: ["問題分解", "真因究明", "打ち手の洗い出し", "論点整理", "全体像把握", "KPI分解", "どこから手をつけるか", "売上低迷・業績悪化の分解"]
+    pairs_well_with: ["backcasting", "cynefin", "fishbone", "five-whys", "fmea", "fta", "kgi-kpi-okr", "lateral-thinking", "mece", "mind-map", "payoff-matrix", "pyramid-structure", "reverse-assumption", "so-what-why-so"]
+    perspective_shift: false
+  - id: mece
+    name_ja: "MECE"
+    lens: analysis
+    category: D_logic
+    purpose: "対象を重複なく・漏れなく（モレなくダブりなく）分解し、論点・原因・選択肢の切り分けの質＝網羅性(CE)と排他性(ME)を担保する。…"
+    fit_tags: ["論点整理", "網羅性チェック", "抜け漏れ防止", "分解・分類", "切り分け", "ダブり排除"]
+    pairs_well_with: ["3c", "decision-matrix", "fishbone", "kgi-kpi-okr", "kj-method", "logic-tree", "mandala-chart", "mind-map", "pyramid-structure", "reverse-assumption", "so-what-why-so"]
+    perspective_shift: false
+  - id: pyramid-structure
+    name_ja: "ピラミッドストラクチャー"
+    lens: analysis
+    category: D_logic
+    purpose: "伝えたい結論を頂点に根拠・事実を階層化し、結論先行で報告・提案・文章を論理構造化する。…"
+    fit_tags: ["報告・提案の構造化", "結論先行で伝える", "ストーリーライン設計", "論理の飛躍・羅列を潰す", "プレゼン/文書の骨子作り", "主張と根拠の点検"]
+    pairs_well_with: ["devils-advocate", "five-whys", "logic-tree", "mece", "premortem", "so-what-why-so", "stakeholder-analysis"]
+    perspective_shift: false
+  - id: fishbone
+    name_ja: "特性要因図"
+    lens: analysis
+    category: D_logic
+    purpose: "一つの結果（特性）に対する要因を4M等のカテゴリで漏れなく洗い出し、魚の骨状に構造化して真因の候補を絞り込む"
+    fit_tags: ["真因究明", "要因の網羅的洗い出し", "品質・不良分析", "ばらつき低減", "チームでの原因整理"]
+    pairs_well_with: ["brainstorming", "devils-advocate", "five-whys", "fmea", "fta", "lean", "logic-tree", "mece", "pdca", "premortem", "qc-story", "service-blueprint", "six-sigma", "three-step-method", "value-stream-mapping"]
+    perspective_shift: false
+  - id: five-whys
+    name_ja: "なぜなぜ分析"
+    lens: analysis
+    category: D_logic
+    purpose: "「なぜ？」を繰り返して問題の症状から根本原因（真因）まで掘り下げ、対症療法でなく再発を止める恒久対策に繋げる"
+    fit_tags: ["真因究明", "再発防止", "不良・ミスの原因深掘り", "対症療法からの脱却", "ヒューマンエラーの仕組み化", "クレーム・事故の原因分析"]
+    pairs_well_with: ["5s", "abduction", "cynefin", "devils-advocate", "ecrs", "fishbone", "fmea", "fta", "grow-model", "herzberg", "hope-defect-listing", "kpt", "lean", "logic-tree", "mckinsey-7s", "negotiation-batna", "pdca", "premortem", "pyramid-structure", "qc-story", "service-blueprint", "six-sigma", "so-what-why-so", "three-step-method", "toc", "triz", "value-stream-mapping"]
+    perspective_shift: false
+  - id: so-what-why-so
+    name_ja: "So What?/Why So?"
+    lens: analysis
+    category: D_logic
+    purpose: "事実・データから「だから何が言えるか（So What?）」という中身のある示唆を抽出し、「なぜそう言えるか（Why So?）」で根拠を検証して、結論と根拠のあい…"
+    fit_tags: ["示唆抽出", "話の飛びをなくす", "結論と根拠の検証", "データから何が言えるか", "報告・提案の論理チェック"]
+    pairs_well_with: ["devils-advocate", "five-whys", "kj-method", "logic-tree", "market-sizing", "mece", "pyramid-structure"]
+    perspective_shift: false
+  - id: fta
+    name_ja: "FTA（故障の木解析）"
+    lens: analysis
+    category: D_logic
+    purpose: "望ましくない重大事象（トップ事象）を頂点に、原因をAND/ORの論理ゲートで演繹的に分解し、最小カットセット（トップ事象を起こす最小の原因の組み合わせ）と発生確…"
+    fit_tags: ["重大事故・システムダウンの原因究明", "単一障害点の特定", "冗長化・安全対策の効果を確率で評価", "複数故障が重なる最悪事象の予防", "事故・重大トラブルの事後解析", "致命的な故障経路の洗い出し"]
+    pairs_well_with: ["decision-tree", "fishbone", "five-whys", "fmea", "logic-tree", "pdca", "premortem", "qc-story"]
+    perspective_shift: false
+  - id: osborn-checklist
+    name_ja: "オズボーンのチェックリスト"
+    lens: ideation
+    category: E_divergent
+    purpose: "既存の製品・サービス・企画・業務に9つの問い（転用・応用・変更・拡大・縮小・代用・置換・逆転・結合）を強制的に当て、視点を機械的に切り替えてアイデアを網羅的に量…"
+    fit_tags: ["アイデア枯渇の打開", "発想の切り口出し", "一人ブレスト", "既存商品の改善・派生アイデア", "企画の手詰まり打開", "網羅的なアイデア出し"]
+    pairs_well_with: ["analogical-thinking", "attribute-listing", "brainstorming", "devils-advocate", "hope-defect-listing", "morphological-analysis", "payoff-matrix", "pmi", "random-word", "reverse-assumption", "scamper"]
+    perspective_shift: false
+  - id: scamper
+    name_ja: "SCAMPER"
+    lens: ideation
+    category: E_divergent
+    purpose: "既存の製品・サービス・業務・企画を7つの動詞（代替S・結合C・応用A・修正M・転用P・削除E・逆転R）で強制的に変形し、改善・差別化・転用アイデアを数多く出す"
+    fit_tags: ["アイデアが行き詰まった", "既存商品の改良", "差別化のネタ出し", "コスト・工程の見直し", "マンネリ打破", "ブレストの切り口補充", "新用途・横展開の探索"]
+    pairs_well_with: ["attribute-listing", "brainstorming", "brainwriting-635", "design-thinking", "equivalent-transformation", "hope-defect-listing", "jtbd", "lateral-thinking", "mind-map", "morphological-analysis", "nm-method", "osborn-checklist", "payoff-matrix", "pmi", "premortem", "random-word", "reverse-assumption", "triz"]
+    perspective_shift: false
+  - id: brainstorming
+    name_ja: "ブレインストーミング"
+    lens: ideation
+    category: E_divergent
+    purpose: "判断を保留したまま自由連想で短時間に大量のアイデアを発散させ、選択肢の幅を広げて発想の起点を作る"
+    fit_tags: ["アイデア出し", "発散", "選択肢を広げる", "行き詰まり打開", "企画の切り口", "数を出す", "会議で意見が広がらない"]
+    pairs_well_with: ["brainwriting-635", "design-thinking", "fishbone", "kj-method", "osborn-checklist", "payoff-matrix", "pmi", "reverse-assumption", "scamper", "six-hats", "synectics"]
+    perspective_shift: false
+  - id: brainwriting-635
+    name_ja: "ブレインライティング（635法）"
+    lens: ideation
+    category: E_divergent
+    purpose: "沈黙で紙に3案を書いて隣へ回し、他者案に積み上げながら短時間で大量のアイデアを強制的に発散させる"
+    fit_tags: ["アイデアの数を稼ぐ", "沈黙の発散", "意見の偏り回避", "全員平等参加", "内向的メンバー", "発想のマンネリ打破"]
+    pairs_well_with: ["brainstorming", "kj-method", "payoff-matrix", "random-word", "reverse-assumption", "scamper"]
+    perspective_shift: false
+  - id: mandala-chart
+    name_ja: "マンダラート"
+    lens: ideation
+    category: E_divergent
+    purpose: "中央の主題を起点に3×3の9マスへ発想を放射状に広げ、転記による深掘りと9×9＝81マスで大目標→中目標→小目標（具体行動）へ分解する発散フレーム（松村寧雄の『…"
+    fit_tags: ["アイデア発想", "発想の行き詰まり打開", "目標の行動分解", "思考の外化・整理", "自己分析・進路計画"]
+    pairs_well_with: ["decision-matrix", "kgi-kpi-okr", "mece", "mind-map", "payoff-matrix", "premortem", "reverse-assumption"]
+    perspective_shift: false
+  - id: kj-method
+    name_ja: "KJ法"
+    lens: analysis
+    category: E_divergent
+    purpose: "ブレストや調査で出た大量の断片的な質的情報・意見・アイデアを1枚1情報のカードにし、似た感じのもの同士をボトムアップで束ね（島づくり・表札づくり）、空間配置で図…"
+    fit_tags: ["情報の統合", "質的データの整理", "ブレスト後の収束", "アイデアの構造化", "仮説形成", "ユーザーの声の整理", "曖昧な問題の切り口出し"]
+    pairs_well_with: ["abduction", "brainstorming", "brainwriting-635", "design-thinking", "devils-advocate", "hope-defect-listing", "jtbd", "mece", "mind-map", "nm-method", "reverse-assumption", "so-what-why-so"]
+    perspective_shift: false
+  - id: mind-map
+    name_ja: "マインドマップ"
+    lens: ideation
+    category: E_divergent
+    purpose: "中心テーマから枝を放射状に広げ、連想を1枚に描き出して発散・整理し、収束の起点を作る"
+    fit_tags: ["アイデア発散", "頭の整理", "全体像把握", "企画・プレゼンの骨子づくり", "一人ブレスト", "学習・ノート整理"]
+    pairs_well_with: ["kj-method", "logic-tree", "mandala-chart", "mece", "reverse-assumption", "scamper", "six-hats"]
+    perspective_shift: false
+  - id: attribute-listing
+    name_ja: "属性列挙法"
+    lens: ideation
+    category: E_divergent
+    purpose: "対象（製品・サービス・業務プロセス）を名詞的/形容詞的/動詞的な属性に分解し、各属性を変える・なくす・代替することで改良アイデアを網羅的に量産する発散技法"
+    fit_tags: ["既存品・サービスの改良", "差別化の切り口出し", "発想が堂々巡りで停滞", "機能・スペックの見直し", "網羅的なアイデア洗い出し"]
+    pairs_well_with: ["hope-defect-listing", "morphological-analysis", "osborn-checklist", "payoff-matrix", "reverse-assumption", "scamper"]
+    perspective_shift: false
+  - id: morphological-analysis
+    name_ja: "形態分析法"
+    lens: ideation
+    category: E_divergent
+    purpose: "対象を独立したパラメータ（軸）に分解し、各軸の選択肢を掛け合わせて発想空間を網羅的に洗い出し、クロス整合性評価で矛盾する組み合わせを消し込んで有望なアイデア案を…"
+    fit_tags: ["アイデア発想", "網羅的な選択肢出し", "組み合わせ発想", "マンネリ打破", "新商品・新サービス構想", "発想の抜け漏れ防止"]
+    pairs_well_with: ["attribute-listing", "decision-matrix", "osborn-checklist", "payoff-matrix", "premortem", "reverse-assumption", "scamper", "triz"]
+    perspective_shift: false
+  - id: hope-defect-listing
+    name_ja: "希望点/欠点列挙法"
+    lens: ideation
+    category: E_divergent
+    purpose: "対象の「あったらいいな（希望点）」と「不満・欠点」を自由に列挙し、主要点を選別して実現策・改善策へ変換する発散型アイデア発想法"
+    fit_tags: ["既存商品/サービスの改善", "新機能・リニューアルの着想", "業務の不便・ムダの洗い出し", "ブレストの切り口探し", "顧客の不満/要望の構造化", "発想の行き詰まり打破"]
+    pairs_well_with: ["attribute-listing", "five-whys", "jtbd", "kano", "kj-method", "osborn-checklist", "payoff-matrix", "pmi", "reverse-assumption", "scamper"]
+    perspective_shift: false
+  - id: random-word
+    name_ja: "ランダムワード法"
+    lens: ideation
+    category: E_divergent
+    purpose: "課題と無関係にランダム選定した語の属性・連想・比喩を強制連結し、既存の思考パターンの外から新しいアイデアの種を量産する発散技法"
+    fit_tags: ["発想の行き詰まり打開", "アイデアのマンネリ打破", "ネタ出しの起点", "強制連結でパターン破壊", "ブレストの刺激・打開"]
+    pairs_well_with: ["analogical-thinking", "brainwriting-635", "lateral-thinking", "osborn-checklist", "payoff-matrix", "pmi", "reverse-assumption", "scamper", "synectics"]
+    perspective_shift: false
+  - id: synectics
+    name_ja: "シネクティクス"
+    lens: ideation
+    category: E_divergent
+    purpose: "問題を4種類のアナロジー（直接・擬人・象徴・空想）で異分野へ飛ばし、得た発想を強制結合(force fit)して独創的な解決策を生む発想技法"
+    fit_tags: ["発想の行き詰まり打破", "飛躍した非連続なアイデア", "他分野・自然からの借用", "根本的な作り替え", "類比・メタファー発想"]
+    pairs_well_with: ["analogical-thinking", "brainstorming", "equivalent-transformation", "nm-method", "payoff-matrix", "pmi", "premortem", "random-word", "reverse-assumption"]
+    perspective_shift: true
+  - id: nm-method
+    name_ja: "NM法"
+    lens: ideation
+    category: E_divergent
+    purpose: "課題の本質をキーワード化し、遠い分野・自然界の類比(QA)→その背景・仕組み(QB)→自分の課題への転用(QC)という明確な手順で、既存の延長でない飛躍したアイ…"
+    fit_tags: ["アイデア発想", "行き詰まり打開", "類比・アナロジー", "他分野・自然界からの借用", "ブレストのマンネリ打破", "発明・技術課題の突破"]
+    pairs_well_with: ["analogical-thinking", "equivalent-transformation", "kj-method", "payoff-matrix", "premortem", "reverse-assumption", "scamper", "synectics"]
+    perspective_shift: true
+  - id: triz
+    name_ja: "TRIZ"
+    lens: ideation
+    category: F_invention
+    purpose: "技術・製品・プロセスの矛盾（トレードオフ）を妥協せず突破する発明的アイデアを、40発明原理・矛盾マトリクス・物質-場分析・9画面法・USITで系統的に生む"
+    fit_tags: ["矛盾突破", "トレードオフ両立", "技術的ブレイクスルー", "設計改善の行き詰まり", "特許回避・代替案探索", "不良・機能不全の対策発想"]
+    pairs_well_with: ["analogical-thinking", "equivalent-transformation", "five-whys", "morphological-analysis", "payoff-matrix", "premortem", "scamper"]
+    perspective_shift: false
+  - id: equivalent-transformation
+    name_ja: "等価変換理論"
+    lens: ideation
+    category: F_invention
+    purpose: "課題の本質(ε)を観点で抽出し、異分野の既存解や自然現象から等価な構造を借りて飛躍的な発想へ変換する"
+    fit_tags: ["発想の飛躍", "アナロジー発想", "発明・技術開発", "本質抽出", "異分野からの転用", "ブレークスルー", "アイデアが行き詰まった"]
+    pairs_well_with: ["analogical-thinking", "devils-advocate", "nm-method", "scamper", "synectics", "triz"]
+    perspective_shift: true
+  - id: six-hats
+    name_ja: "シックスハット"
+    lens: perspective-shift
+    category: G_perspective
+    purpose: "検討を6色の思考モード（白=事実/赤=感情/黒=リスク/黄=利点/緑=発想/青=進行）に切り替え、全員で同じ視点を順にあてて多角的に検討し、会議の偏り・対立・思…"
+    fit_tags: ["会議の視点が偏る", "賛否の対立で膠着", "感情と事実の混線", "多角的に抜け漏れなく検討", "批判を角を立てず引き出す", "ブレストが批判で止まる"]
+    pairs_well_with: ["brainstorming", "decision-matrix", "devils-advocate", "grow-model", "lateral-thinking", "mind-map", "ooda", "pmi", "premortem", "red-team", "reverse-assumption", "stakeholder-analysis"]
+    perspective_shift: true
+  - id: lateral-thinking
+    name_ja: "水平思考"
+    lens: perspective-shift
+    category: G_perspective
+    purpose: "前提・常識を意図的に外して「横に飛び」、既存の枠の外に新しい選択肢を生む。…"
+    fit_tags: ["発想の手詰まり", "前提を疑う", "リフレーミング", "コモディティ脱却", "斬新な打ち手", "アイデア発散"]
+    pairs_well_with: ["analogical-thinking", "devils-advocate", "logic-tree", "pmi", "premortem", "random-word", "reverse-assumption", "scamper", "six-hats"]
+    perspective_shift: true
+  - id: analogical-thinking
+    name_ja: "アナロジー思考"
+    lens: perspective-shift
+    category: G_perspective
+    purpose: "解決したい課題（ターゲット）と遠い異分野の事例（ベース）の間に構造・関係性の類似を見出し、その仕組みを抽象化して借り、転用して新しいアイデア・解決策を生む"
+    fit_tags: ["アイデアの行き詰まり打開", "前例のない課題", "異業界の成功パターン応用", "本質構造の抽出", "難しい概念の説明", "既存常識の打破"]
+    pairs_well_with: ["abduction", "devils-advocate", "equivalent-transformation", "lateral-thinking", "lean-startup-mvp", "nm-method", "osborn-checklist", "premortem", "random-word", "synectics", "triz"]
+    perspective_shift: true
+  - id: abduction
+    name_ja: "アブダクション"
+    lens: perspective-shift
+    category: G_perspective
+    purpose: "既存の枠組みでは説明できない意外な事実（アノマリー）から、それを最もよく説明する仮説へ跳躍し、複数候補を並べて評価し、演繹→帰納の検証可能な形に落とす"
+    fit_tags: ["意外な事実の説明", "仮説形成", "真因の当たりづけ", "発想の行き詰まり打開", "データの解釈", "新しい切り口・視点転換", "効かない対策からの真因推論"]
+    pairs_well_with: ["analogical-thinking", "devils-advocate", "five-whys", "jtbd", "kj-method", "lean-startup-mvp", "premortem", "reverse-assumption"]
+    perspective_shift: true
+  - id: reverse-assumption
+    name_ja: "逆設定法（天邪鬼法）"
+    lens: perspective-shift
+    category: G_perspective
+    purpose: "テーマの当たり前・常識・前提を意図的に反転させ、その逆をどう成立させるかを問うことで、既存の枠を超えた非連続なアイデアを生む発想法。…"
+    fit_tags: ["発想の行き詰まり打開", "常識・前提を疑う", "差別化アイデア創出", "非連続な発想", "マンネリ打破", "レッドオーシャンの切り口", "効かない対策の前提を疑う", "真因が見えない問題の枠外し"]
+    pairs_well_with: ["abduction", "attribute-listing", "backcasting", "blue-ocean", "brainstorming", "brainwriting-635", "customer-journey", "design-thinking", "devils-advocate", "ecrs", "hope-defect-listing", "jtbd", "kano", "kj-method", "lateral-thinking", "logic-tree", "mandala-chart", "mece", "mind-map", "morphological-analysis", "nm-method", "osborn-checklist", "payoff-matrix", "persona", "pmi", "premortem", "random-word", "red-team", "scamper", "scenario-planning", "six-hats", "synectics", "three-step-method", "value-chain"]
+    perspective_shift: true
+  - id: cynefin
+    name_ja: "クネビン・フレームワーク"
+    lens: perspective-shift
+    category: G_perspective
+    purpose: "直面する問題・状況を「どういう種類の系か」で明白/煩雑/複雑/混沌/無秩序の5域に診断し、域ごとに因果の見え方が違うから意思決定の型（把握→分類/分析/探索/即…"
+    fit_tags: ["問題の性質からして分からない", "分析で解けるかやってみないと分からないか切り分けたい", "ベストプラクティス通りなのに上手くいかない", "前例のない事態・危機で何から手をつけるか", "計画すべき派とまず試す派が噛み合わない", "計画通りに進まないのは計画が悪いのか問題の性質か"]
+    pairs_well_with: ["decision-tree", "design-thinking", "devils-advocate", "five-whys", "lean-startup-mvp", "logic-tree", "ooda", "premortem", "qc-story", "scenario-planning"]
+    perspective_shift: true
+  - id: premortem
+    name_ja: "プレモータム分析"
+    lens: risk
+    category: H_refine
+    purpose: "着手前の計画を「もう大失敗した」と仮定し、失敗理由を逆算で先回りに洗い出して、優先順位・緩和策・担当まで落とし込む"
+    fit_tags: ["リスク潰し", "意思決定前の点検", "計画のストレステスト", "集団浅慮・過信の是正", "実行直前の揺さぶり", "見落とし・死角の洗い出し", "個人の大きな決断の事前検証"]
+    pairs_well_with: ["3c", "4p", "5s", "aarrr", "abduction", "analogical-thinking", "ansoff", "backcasting", "blue-ocean", "business-model-canvas", "change-management", "core-competence", "cross-swot", "cynefin", "decision-matrix", "decision-tree", "design-thinking", "devils-advocate", "eisenhower-matrix", "fishbone", "five-whys", "fmea", "fta", "grow-model", "herzberg", "jtbd", "kano", "kgi-kpi-okr", "kpt", "lateral-thinking", "lean", "lean-canvas", "lean-startup-mvp", "mandala-chart", "market-sizing", "mckinsey-7s", "morphological-analysis", "negotiation-batna", "nm-method", "ooda", "payoff-matrix", "pdca", "pest", "pmi", "ppm-bcg", "purchase-behavior", "pyramid-structure", "qc-story", "red-team", "reverse-assumption", "rfm", "scamper", "scenario-planning", "service-blueprint", "six-hats", "six-sigma", "stakeholder-analysis", "stp", "swot", "synectics", "three-step-method", "toc", "triz", "unit-economics", "value-stream-mapping", "vrio"]
+    perspective_shift: true
+  - id: devils-advocate
+    name_ja: "悪魔の代弁者"
+    lens: risk
+    category: H_refine
+    purpose: "賛成に傾いた決定・計画・仮説に「反対役」を割り当て、確定前に最強の反論でストレステストして集団浅慮と確証バイアスを崩し、意思決定の質を上げてから再決定へ橋渡しす…"
+    fit_tags: ["賛成一色で不安", "反対意見が出ない", "集団浅慮対策", "確証バイアス除去", "意思決定の確定前点検", "大型投資の穴出し", "計画のリスク潰し"]
+    pairs_well_with: ["3c", "4p", "aarrr", "abduction", "analogical-thinking", "ansoff", "business-model-canvas", "change-management", "core-competence", "cross-swot", "cynefin", "decision-matrix", "design-thinking", "eisenhower-matrix", "equivalent-transformation", "fishbone", "five-whys", "herzberg", "kano", "kj-method", "kpt", "lateral-thinking", "lean-canvas", "lean-startup-mvp", "market-sizing", "negotiation-batna", "ooda", "osborn-checklist", "payoff-matrix", "pest", "pmi", "ppm-bcg", "premortem", "pyramid-structure", "red-team", "reverse-assumption", "scenario-planning", "service-blueprint", "six-hats", "so-what-why-so", "stakeholder-analysis", "stp", "unit-economics", "value-proposition-canvas", "vrio"]
+    perspective_shift: true
+  - id: red-team
+    name_ja: "レッドチーム"
+    lens: risk
+    category: H_refine
+    purpose: "独立した『敵・競合・批判者』の視点で計画や意思決定を意図的に攻撃し、当事者には見えない脆弱性・未検証の前提・失敗シナリオを実行前に洗い出して対策に変える"
+    fit_tags: ["計画の事前検証", "集団浅慮対策", "前提の反証・ストレステスト", "競合の妨害想定", "不可逆な大型意思決定のリスク潰し", "想像力の失敗の予防"]
+    pairs_well_with: ["ansoff", "backcasting", "business-model-canvas", "cross-swot", "devils-advocate", "five-forces", "negotiation-batna", "payoff-matrix", "ppm-bcg", "premortem", "reverse-assumption", "six-hats", "three-step-method"]
+    perspective_shift: true
+  - id: pmi
+    name_ja: "PMI"
+    lens: decision
+    category: H_refine
+    purpose: "1つのアイデア・提案・選択肢を Plus/Minus/Interesting の3チャンネルで素早く多面評価し、即断の好き嫌いに流されない判断を作る"
+    fit_tags: ["アイデアの是非評価", "賛否が割れた時", "即断バイアス回避", "案の一次スクリーニング", "短時間の多面評価"]
+    pairs_well_with: ["brainstorming", "devils-advocate", "hope-defect-listing", "lateral-thinking", "osborn-checklist", "payoff-matrix", "premortem", "random-word", "reverse-assumption", "scamper", "six-hats", "synectics"]
+    perspective_shift: false
+  - id: payoff-matrix
+    name_ja: "ペイオフマトリクス"
+    lens: decision
+    category: H_refine
+    purpose: "施策・アイデア・打ち手を効果（インパクト）×実現容易性（労力・コスト）の2軸4象限に配置し、Quick Winを起点に着手順（優先順位）を決めて絞り込む"
+    fit_tags: ["優先順位づけ", "アイデアの絞り込み", "Quick Win特定", "施策の取捨選択", "限られたリソースの配分", "やること/やらないことの仕分け"]
+    pairs_well_with: ["attribute-listing", "brainstorming", "brainwriting-635", "cross-swot", "decision-matrix", "decision-tree", "devils-advocate", "ecrs", "eisenhower-matrix", "hope-defect-listing", "kano", "lean-startup-mvp", "logic-tree", "mandala-chart", "morphological-analysis", "negotiation-batna", "nm-method", "osborn-checklist", "pmi", "ppm-bcg", "premortem", "random-word", "red-team", "reverse-assumption", "scamper", "synectics", "triz", "unit-economics"]
+    perspective_shift: false
+  - id: decision-tree
+    name_ja: "ディシジョンツリー（決定木・期待値分析）"
+    lens: decision
+    category: H_refine
+    purpose: "不確実な結果を伴う意思決定を、決定ノード（自分が選ぶ）とチャンスノード（確率つきの運）の分岐図に描き、右端のペイオフから畳み込んで期待値（EMV）が最大の経路を…"
+    fit_tags: ["不確実な結果を確率で見込んで投資/撤退を決めたい", "大型投資を一括か段階かで迷う", "テスト・パイロットにお金をかける価値があるか", "賭けの期待値と分かれ道を数字で整理したい", "先に小さく試して様子を見る価値を可視化したい", "今決めるか調査してから決めるかの判断"]
+    pairs_well_with: ["cynefin", "decision-matrix", "fmea", "fta", "lean-startup-mvp", "payoff-matrix", "premortem", "scenario-planning", "unit-economics"]
+    perspective_shift: false
+  - id: 5s
+    name_ja: "5S"
+    lens: improvement
+    category: I_operations
+    purpose: "職場・現場を整理・整頓・清掃・清潔・躾の5段階で整え、探すムダ・過剰在庫・安全リスクを減らし、改善が根づく土台をつくる"
+    fit_tags: ["現場改善", "整理整頓", "ムダ取り", "職場の安全", "探すムダ削減", "改善文化の土台", "業務標準化の第一歩", "5Sが続かない"]
+    pairs_well_with: ["ecrs", "five-whys", "pdca", "premortem", "value-stream-mapping"]
+    perspective_shift: false
+  - id: ecrs
+    name_ja: "ECRS"
+    lens: improvement
+    category: I_operations
+    purpose: "既存の業務・工程・作業のムダを、排除E→結合C→交換R→簡素化Sの効果が大きい順に洗い出し、具体的な改善案に変換する"
+    fit_tags: ["業務改善", "ムダ取り", "工数削減", "リードタイム短縮", "現場カイゼン", "DX前の業務棚卸し"]
+    pairs_well_with: ["5s", "five-whys", "lean", "payoff-matrix", "pdca", "qc-story", "reverse-assumption", "three-step-method", "value-chain", "value-stream-mapping"]
+    perspective_shift: false
+  - id: qc-story
+    name_ja: "QCストーリー"
+    lens: improvement
+    category: I_operations
+    purpose: "品質・業務の問題を、決まった手順（テーマ選定→現状把握→目標設定→要因解析→対策→効果確認→標準化）で事実ベースに解決し、真因に基づく再発防止まで型化する。…"
+    fit_tags: ["問題解決", "真因究明", "現場カイゼン", "再発防止", "品質改善", "業務改善", "QCサークル・小集団活動", "標準化"]
+    pairs_well_with: ["cynefin", "ecrs", "fishbone", "five-whys", "fmea", "fta", "kpt", "pdca", "premortem", "three-step-method"]
+    perspective_shift: false
+  - id: value-stream-mapping
+    name_ja: "バリューストリームマッピング"
+    lens: improvement
+    category: I_operations
+    purpose: "モノ・情報・時間（リードタイム）の流れを1枚に描き、待ち/在庫/作りすぎ等のムダを可視化して、川上から川下までの流れ全体を現状→あるべき姿へ改善する"
+    fit_tags: ["リードタイム短縮", "ムダの可視化", "ボトルネック特定", "工程全体の俯瞰", "業務プロセス改善", "リーン/カイゼンの着手前"]
+    pairs_well_with: ["5s", "ecrs", "fishbone", "five-whys", "lean", "pdca", "premortem", "service-blueprint", "six-sigma", "toc"]
+    perspective_shift: false
+  - id: toc
+    name_ja: "TOC（制約理論）"
+    lens: improvement
+    category: I_operations
+    purpose: "システム全体のスループットを律速している制約（ボトルネック）を1つ特定し、5つの集中ステップ（特定→徹底活用→従属→能力向上→慣性回避）で局所最適の罠を外し全体…"
+    fit_tags: ["ボトルネック特定", "全体最適", "スループット改善", "局所最適・部分最適の是正", "リードタイム短縮", "仕掛品・滞留の削減", "直列フロー・工程改善", "選択と集中の一点決め"]
+    pairs_well_with: ["five-whys", "fmea", "kgi-kpi-okr", "lean", "pdca", "premortem", "six-sigma", "value-stream-mapping"]
+    perspective_shift: false
+  - id: lean
+    name_ja: "リーン生産方式"
+    lens: improvement
+    category: I_operations
+    purpose: "顧客価値を起点に7つのムダを排除し、価値の流れ(flow)と引く仕組み(pull)を作ってリードタイム・在庫・不良・手待ちを減らす改善体系。…"
+    fit_tags: ["ムダ排除", "リードタイム短縮", "在庫圧縮", "工程・業務の流れ改善", "生産性向上", "品質安定・標準化", "コスト削減の初手", "手待ち・停滞解消"]
+    pairs_well_with: ["ecrs", "fishbone", "five-whys", "pdca", "premortem", "six-sigma", "toc", "value-stream-mapping"]
+    perspective_shift: false
+  - id: six-sigma
+    name_ja: "シックスシグマ"
+    lens: improvement
+    category: I_operations
+    purpose: "製造・業務プロセスの欠陥やばらつきを、データと統計でDMAIC(定義→測定→分析→改善→管理)の順に真因まで突き止めて減らし、管理図・標準化で改善を仕組みとして…"
+    fit_tags: ["品質改善", "ばらつき低減", "不良率削減", "歩留り改善", "データで真因究明", "工程能力向上", "再発防止・定着"]
+    pairs_well_with: ["fishbone", "five-whys", "fmea", "lean", "pdca", "premortem", "toc", "value-stream-mapping"]
+    perspective_shift: false
+  - id: pdca
+    name_ja: "PDCA"
+    lens: improvement
+    category: I_operations
+    purpose: "業務・品質・プロセスの改善を「計画→実行→評価→改善」の反復に落とし込み、効果検証と標準化まで含めて継続的（螺旋状）に回す改善ループを設計する"
+    fit_tags: ["継続的改善", "効果検証", "業務・品質改善", "再発防止", "目標運用の空回り解消", "振り返りの規律化", "やりっぱなし防止"]
+    pairs_well_with: ["5s", "ecrs", "eisenhower-matrix", "fishbone", "five-whys", "fmea", "fta", "grow-model", "kgi-kpi-okr", "kpt", "lean", "ooda", "premortem", "qc-story", "six-sigma", "toc", "value-stream-mapping"]
+    perspective_shift: false
+  - id: fmea
+    name_ja: "FMEA（故障モード影響解析）"
+    lens: risk
+    category: I_operations
+    purpose: "製品・工程を構成要素に分解し、各要素の故障モード×影響×原因を網羅的に洗い出して、深刻度(S)・発生度(O)・検出度(D)で採点(RPN/AP)し、対策すべき品…"
+    fit_tags: ["何がどう壊れうるか漏れなく洗いたい", "不良・事故・クレームの未然防止", "品質リスクを数字で優先順位づけ", "新製品・新ライン立ち上げ前のリスク潰し", "再発防止の仕組みづくり", "設計・工程の潜在故障の網羅"]
+    pairs_well_with: ["decision-tree", "fishbone", "five-whys", "fta", "logic-tree", "pdca", "premortem", "qc-story", "service-blueprint", "six-sigma", "toc"]
+    perspective_shift: false
+  - id: three-step-method
+    name_ja: "3ステップメソッド"
+    lens: risk
+    category: I_operations
+    purpose: "特定済みのリスクへの対策を、本質的安全設計→安全防護・付加保護→使用上の情報の3段階で効果の高い順に階層化し、設計で危険源そのものを潰してから注意喚起・教育・保…"
+    fit_tags: ["安全対策・再発防止策の優先順位づけ", "注意喚起・研修頼みからの脱却", "ミス・不良・事故の再発防止", "ヒューマンエラーを仕組みで防ぐ", "リスクを下げる設計", "気をつけますで終わらせない"]
+    pairs_well_with: ["ecrs", "fishbone", "five-whys", "premortem", "qc-story", "red-team", "reverse-assumption"]
+    perspective_shift: false
+  - id: kpt
+    name_ja: "KPT（ふりかえり）"
+    lens: improvement
+    category: I_operations
+    purpose: "チーム（または個人）の一定期間の活動をKeep（続けたい良かったこと）/Problem（困っている問題）/Try（次に試す具体アクション）の3枠でふりかえり、事…"
+    fit_tags: ["定例ふりかえりを回したい", "チームの改善が形骸化している", "良かった点と課題を整理したい", "反省会が愚痴で終わってしまう", "アジャイル/スクラムのレトロを型にしたい", "小さく改善を積み上げたい", "次に試す一手をチームで合意したい"]
+    pairs_well_with: ["aarrr", "devils-advocate", "five-whys", "grow-model", "kgi-kpi-okr", "pdca", "premortem", "qc-story", "service-blueprint"]
+    perspective_shift: false
+  - id: mckinsey-7s
+    name_ja: "マッキンゼー7S"
+    lens: people
+    category: J_organization
+    purpose: "組織を7要素（戦略・組織構造・システム・共通の価値観・経営スタイル・人材・スキル）に分解し、要素間の整合（ズレ）を診断して組織課題の本丸を特定する"
+    fit_tags: ["組織変革", "戦略実行のギャップ診断", "組織の現状棚卸し", "M&A後の組織統合(PMI)", "制度と風土のズレ", "新戦略に合わせた組織設計"]
+    pairs_well_with: ["backcasting", "change-management", "five-whys", "herzberg", "kgi-kpi-okr", "maslow", "premortem", "stakeholder-analysis", "swot"]
+    perspective_shift: false
+  - id: kgi-kpi-okr
+    name_ja: "KGI/KPI/OKR"
+    lens: decision
+    category: J_organization
+    purpose: "最終目標(KGI)を数値化し、KSF(重要成功要因)経由でKPI(中間・先行指標)へ分解し、OKRで挑戦的目標を立てて四半期で進捗を測る、目標と指標のマネジメン…"
+    fit_tags: ["目標設定", "目標の数値化", "指標設計", "KPIツリー分解", "OKR導入・設計", "進捗管理・レビュー", "KGIからの落とし込み", "指標の優先順位づけ"]
+    pairs_well_with: ["aarrr", "backcasting", "change-management", "eisenhower-matrix", "grow-model", "herzberg", "kano", "kpt", "logic-tree", "mandala-chart", "mckinsey-7s", "mece", "pdca", "premortem", "toc", "unit-economics"]
+    perspective_shift: false
+  - id: maslow
+    name_ja: "マズローの欲求段階説"
+    lens: people
+    category: J_organization
+    purpose: "人の動機を生理・安全・所属・承認・自己実現の5階層で見立て、満たされていない欲求のボトルネックを診断して動機づけ施策の抜け漏れと優先順位を洗い出す"
+    fit_tags: ["動機づけ", "従業員エンゲージメント", "離職・定着の診断", "顧客の欲求理解", "人材マネジメント"]
+    pairs_well_with: ["grow-model", "herzberg", "jtbd", "mckinsey-7s", "persona"]
+    perspective_shift: false
+  - id: herzberg
+    name_ja: "ハーズバーグの二要因理論"
+    lens: people
+    category: J_organization
+    purpose: "職場の満足を生む『動機づけ要因(達成・承認・仕事そのもの・責任・成長)』と不満足を防ぐ『衛生要因(給与・方針・労働条件・人間関係)』を切り分けて診断し、不満の是…"
+    fit_tags: ["動機づけ診断", "離職・定着", "エンゲージメント向上", "職務設計・職務充実", "モチベーション低下の整理", "報奨・制度見直し", "自分の不満・やりがいの自己診断"]
+    pairs_well_with: ["change-management", "devils-advocate", "five-whys", "grow-model", "kgi-kpi-okr", "maslow", "mckinsey-7s", "premortem"]
+    perspective_shift: false
+  - id: grow-model
+    name_ja: "GROWモデル"
+    lens: people
+    category: J_organization
+    purpose: "Goal→Reality→Options→Will の4段の問いで、相手が自分で答えと次の一手を見つけるのを助けるコーチング対話フレーム。…"
+    fit_tags: ["1on1・面談", "部下育成・コーチング", "目標設定と行動計画", "当事者意識・やる気を引き出す", "問いで気づきを促す"]
+    pairs_well_with: ["change-management", "five-whys", "herzberg", "kgi-kpi-okr", "kpt", "maslow", "pdca", "premortem", "six-hats"]
+    perspective_shift: false
+  - id: eisenhower-matrix
+    name_ja: "緊急度・重要度マトリクス"
+    lens: decision
+    category: J_organization
+    purpose: "緊急度と重要度の2軸でタスク・活動を4象限に仕分けし、各象限に行動(4D: 今すぐ/予定化/委任/中止)を割り当てて優先順位を決め、重要だが緊急でない第2領域(…"
+    fit_tags: ["タスク優先順位づけ", "火消し・割り込みからの脱却", "時間配分の棚卸し", "第2領域(Q2)の確保", "やることが多すぎて手がつかない", "忙しいのに成果が出ない", "個人の時間・優先順位の見直し"]
+    pairs_well_with: ["decision-matrix", "devils-advocate", "kgi-kpi-okr", "payoff-matrix", "pdca", "premortem"]
+    perspective_shift: false
+  - id: decision-matrix
+    name_ja: "意思決定マトリクス"
+    lens: decision
+    category: J_organization
+    purpose: "複数の選択肢を複数の評価基準×重みで採点し、トレードオフを可視化して説明可能な形で最良案を選ぶ"
+    fit_tags: ["選択肢の絞り込み", "打ち手の優先順位づけ", "比較検討・選定", "選定根拠の明示", "トレードオフ整理", "個人の重要な意思決定（転職・進路）"]
+    pairs_well_with: ["decision-tree", "devils-advocate", "eisenhower-matrix", "kano", "mandala-chart", "mece", "morphological-analysis", "negotiation-batna", "ooda", "payoff-matrix", "ppm-bcg", "premortem", "rfm", "six-hats", "stakeholder-analysis", "unit-economics"]
+    perspective_shift: false
+  - id: ooda
+    name_ja: "OODAループ"
+    lens: decision
+    category: J_organization
+    purpose: "不確実・変化が速い・相手のいる状況を、観察→情勢判断(Orient)→意思決定→行動の高速フィードバックサイクルで回し、不完全な情報のまま素早く動きながら学習・…"
+    fit_tags: ["即応・素早い意思決定", "危機・トラブル対応", "不確実性・変化への適応", "分析麻痺の打破", "競合への対抗", "走りながら修正"]
+    pairs_well_with: ["backcasting", "cynefin", "decision-matrix", "devils-advocate", "lean-startup-mvp", "pdca", "premortem", "six-hats"]
+    perspective_shift: false
+  - id: stakeholder-analysis
+    name_ja: "ステークホルダー分析"
+    lens: people
+    category: J_organization
+    purpose: "施策・変革・提案に関わる利害関係者を洗い出し、影響力×関心度の2軸で4象限に配置し、賛否の態度も踏まえて「誰を巻き込み・満足させ・情報提供するか」の合意形成・巻…"
+    fit_tags: ["社内で通らない提案", "キーパーソンの巻き込み", "根回し・調整の設計", "反対勢力への対処", "社内政治の可視化", "誰を動かせば前に進むか", "合意形成・稟議の準備"]
+    pairs_well_with: ["backcasting", "decision-matrix", "devils-advocate", "mckinsey-7s", "negotiation-batna", "premortem", "pyramid-structure", "six-hats"]
+    perspective_shift: false
+  - id: change-management
+    name_ja: "変革マネジメント（コッター8段階・ADKAR）"
+    lens: people
+    category: J_organization
+    purpose: "組織の変化（新戦略・新制度・新システム・統合・文化改革）を成り行き任せにせず、コッター8段階で「危機感→連合→ビジョン→周知→障害除去→短期成果→定着」という時…"
+    fit_tags: ["導入したのに現場が使わない", "変革が号令倒れで進まない", "抵抗勢力にどう動いてもらうか", "M&A・組織統合(PMI)後の足並み", "DX・働き方改革を定着させたい", "なぜこの変革は失速したのか", "変革の進め方の全体設計"]
+    pairs_well_with: ["backcasting", "devils-advocate", "grow-model", "herzberg", "kgi-kpi-okr", "mckinsey-7s", "premortem"]
+    perspective_shift: false
+  - id: negotiation-batna
+    name_ja: "交渉フレームワーク（BATNA/ZOPA）"
+    lens: decision
+    category: J_organization
+    purpose: "相手のいる交渉に臨む前の準備を、決裂時の最善代替案(BATNA)→撤退ライン(留保価格)→双方が重なる合意可能圏(ZOPA)の順に定量化し、立場と利害の分離・相…"
+    fit_tags: ["価格・条件の交渉準備", "相手に足元を見られる・強気に出られない", "値引き/値上げ要求への対応", "取引先/転職オファー/契約更改の交渉前", "落としどころ・撤退ラインが見えない", "決裂は困るが言いなりは嫌"]
+    pairs_well_with: ["decision-matrix", "devils-advocate", "five-whys", "jtbd", "payoff-matrix", "premortem", "red-team", "stakeholder-analysis"]
+    perspective_shift: false

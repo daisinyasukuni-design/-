@@ -6,6 +6,12 @@
       "sourceType": "github",
       "skillPath": "skills/find-skills/SKILL.md",
       "computedHash": "913b9d37d0d54047dd65222bb8c67b2bf04e3cb87dcad1729068d7a8b2c8c396"
+    },
+    "framework-consultant": {
+      "source": "sibucho86/framework-consultant",
+      "sourceType": "github",
+      "skillPath": "skills/framework-consultant/SKILL.md",
+      "computedHash": "8fc2a0abc15817c9b49abeeb4bec1a56a960adb183e82e472be5a8b048ea10c9"
     }
   }
 }
