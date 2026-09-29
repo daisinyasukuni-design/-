@@ -1,0 +1,10 @@
+{
+  "name": "ideas-in-motion-showreel",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "stills": "node render.mjs --frames 0,60,120",
+    "render": "node render.mjs --scale 2 --samples 4"
+  },
+  "devDependencies": { "playwright": "^1.56.1" }
+}
