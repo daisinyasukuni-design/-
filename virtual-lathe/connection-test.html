@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>バーチャル旋盤 接続テスト</title>
+<!--
+  バーチャル旋盤 接続テスト（ネットワークなしで動く1ファイル版）
+  - 外部のファイル・ライブラリ・フォントは使わない
+  - USB メモリなどでタブレットにコピーし、Edge で開いて使う
+  - 通信データの形式は docs/virtual-lathe/design.md の4章と同じ
+-->
+<style>
+  :root {
+    --bg: #f4f6f8;
+    --panel: #ffffff;
+    --text: #1d2329;
+    --muted: #5b6670;
+    --line: #d5dbe0;
+    --accent: #1f6fb2;
+    --ok: #1d7a3a;
+    --ok-bg: #e3f4e8;
+    --ng: #b3261e;
+    --ng-bg: #fbe5e3;
+    --warn: #8a5a00;
+    --warn-bg: #fff3d6;
+    --dial: #e9edf0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15191d;
+      --panel: #1f252b;
+      --text: #e8edf1;
+      --muted: #9aa6b0;
+      --line: #36404a;
+      --accent: #6cb1ec;
+      --ok: #6fd18f;
+      --ok-bg: #173323;
+      --ng: #ff8a80;
+      --ng-bg: #3d1c1a;
+      --warn: #f2c063;
+      --warn-bg: #3a2f14;
+      --dial: #2a3239;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15191d;
+    --panel: #1f252b;
+    --text: #e8edf1;
+    --muted: #9aa6b0;
+    --line: #36404a;
+    --accent: #6cb1ec;
+    --ok: #6fd18f;
+    --ok-bg: #173323;
+    --ng: #ff8a80;
+    --ng-bg: #3d1c1a;
+    --warn: #f2c063;
+    --warn-bg: #3a2f14;
+    --dial: #2a3239;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Yu Gothic UI", "Meiryo", system-ui, sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+  }
+  body.estop { background: var(--ng-bg); }
+  header { padding: 20px 16px 8px; max-width: 1100px; margin: 0 auto; }
+  header h1 { margin: 0; font-size: 26px; }
+  header p { margin: 4px 0 0; color: var(--muted); }
+  main { max-width: 1100px; margin: 0 auto; padding: 8px 16px 40px; }
+  section {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px;
+    margin-top: 16px;
+  }
+  section h2 { margin: 0 0 12px; font-size: 20px; }
+  .step { display: inline-block; min-width: 1.8em; color: var(--accent); }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { text-align: left; padding: 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { width: 34%; font-weight: 600; }
+  .badge { display: inline-block; padding: 0 10px; border-radius: 999px; font-weight: 700; }
+  .ok { color: var(--ok); background: var(--ok-bg); }
+  .ng { color: var(--ng); background: var(--ng-bg); }
+  .warn { color: var(--warn); background: var(--warn-bg); }
+  .hint { color: var(--muted); font-size: 15px; }
+  button {
+    font: inherit;
+    font-weight: 700;
+    padding: 12px 20px;
+    min-height: 52px;
+    border-radius: 8px;
+    border: 2px solid var(--accent);
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+    margin: 4px 8px 4px 0;
+  }
+  button.sub { background: transparent; color: var(--accent); }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  select, input[type="number"] {
+    font: inherit;
+    padding: 8px;
+    min-height: 44px;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--text);
+  }
+  input[type="range"] { width: 220px; max-width: 100%; vertical-align: middle; }
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+  #status { font-weight: 700; font-size: 19px; margin: 8px 0; }
+  .axes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 12px; }
+  .axis { border: 1px solid var(--line); border-radius: 8px; padding: 12px; text-align: center; }
+  .axis h3 { margin: 0 0 4px; font-size: 18px; }
+  .axis canvas { width: 220px; height: 220px; max-width: 100%; }
+  .big { font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .num { font-variant-numeric: tabular-nums; }
+  .lamps { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; }
+  .lamp { padding: 10px 16px; border-radius: 8px; border: 2px solid var(--line); font-weight: 700; min-width: 130px; text-align: center; }
+  .lamp.on-start { border-color: var(--ok); color: var(--ok); background: var(--ok-bg); }
+  .lamp.on-stop { border-color: var(--ng); color: var(--ng); background: var(--ng-bg); }
+  .lamp.on-estop { border-color: var(--ng); color: #fff; background: var(--ng); }
+  .rpmbar { height: 18px; background: var(--dial); border-radius: 9px; overflow: hidden; margin-top: 6px; }
+  .rpmbar > div { height: 100%; width: 0; background: var(--accent); }
+  textarea { width: 100%; min-height: 170px; font: 14px/1.5 Consolas, monospace; padding: 8px; border-radius: 6px; border: 1px solid var(--line); background: var(--panel); color: var(--text); }
+  details summary { cursor: pointer; font-weight: 700; }
+  @media (max-width: 600px) {
+    th { width: 42%; }
+    header h1 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>バーチャル旋盤 接続テスト</h1>
+  <p>このタブレットで、ハンドルユニットがつながるか・音が出るかを確かめるページです。ネットワークにつながっていなくても動きます。</p>
+</header>
+<main>
+
+<section id="sec-env">
+  <h2><span class="step">1</span>この端末のチェック</h2>
+  <p class="hint">ページを開くと自動で調べます。ハンドルユニットがなくても確かめられます。</p>
+  <table id="envTable"></table>
+</section>
+
+<section id="sec-sound">
+  <h2><span class="step">2</span>音のテスト（イヤホン）</h2>
+  <p class="hint">有線のイヤホンをつないでから押してください。最初は小さな音量にしています。Bluetooth イヤホンは音が遅れるので使いません。</p>
+  <div class="row">
+    <label>音量 <input type="range" id="vol" min="0" max="100" value="30"> <span id="volLabel" class="num">30%</span></label>
+  </div>
+  <div class="row">
+    <button id="btnCut">切削音を鳴らす</button>
+    <button id="btnImpact" class="sub">衝撃音を鳴らす</button>
+  </div>
+  <p id="soundResult" class="hint"></p>
+</section>
+
+<section id="sec-conn">
+  <h2><span class="step">3</span>ハンドルユニットにつなぐ</h2>
+  <p class="hint">USB ケーブルでつなぐか、Bluetooth でつなぎます。Bluetooth の場合は、ユニットのラベルと同じ番号（例：VL-01）を選んでください。</p>
+  <div class="row">
+    <button id="btnUsb">USB でつなぐ</button>
+    <button id="btnBle">Bluetooth でつなぐ</button>
+    <button id="btnDisconnect" class="sub" disabled>切断する</button>
+    <button id="btnZero" class="sub" disabled>表示を 0 に戻す</button>
+  </div>
+  <div id="status">未接続</div>
+  <div id="connError" class="hint"></div>
+
+  <div class="axes" id="axes"></div>
+
+  <div class="axis" style="margin-top:16px;text-align:left">
+    <h3>主軸回転数つまみ</h3>
+    <div class="big"><span id="rpm">—</span> <span style="font-size:18px">min⁻¹</span></div>
+    <div class="rpmbar"><div id="rpmBar"></div></div>
+    <div class="hint">0〜4000 min⁻¹（無段階）。つまみを回すと数字が連続して変わることを確かめてください。生の値：<span id="rpmRaw" class="num">—</span></div>
+  </div>
+
+  <div class="lamps">
+    <div class="lamp" id="lampStart">起動ボタン</div>
+    <div class="lamp" id="lampStop">停止ボタン</div>
+    <div class="lamp" id="lampEstop">非常停止</div>
+  </div>
+
+  <table style="margin-top:16px">
+    <tr><th>受信した回数</th><td class="num" id="stRecv">0</td></tr>
+    <tr><th>取りこぼした回数</th><td class="num" id="stLost">0</td></tr>
+    <tr><th>届く間隔（直近50回）</th><td class="num" id="stInterval">—</td></tr>
+    <tr><th>USB の読み取りエラー</th><td class="num" id="stBad">0</td></tr>
+  </table>
+</section>
+
+<section id="sec-vib">
+  <h2><span class="step">4</span>振動のテスト</h2>
+  <p class="hint">ハンドルユニットにつないでから使います。押すと短い時間だけ振動します。</p>
+  <div class="row">
+    <label>場所
+      <select id="vibTarget">
+        <option value="0">すべて</option>
+        <option value="1">往復台</option>
+        <option value="2">横送り</option>
+        <option value="3">刃物送り台</option>
+      </select>
+    </label>
+    <label>パターン
+      <select id="vibPattern">
+        <option value="0">連続（切削中）</option>
+        <option value="1">細かい振動（びびり）</option>
+        <option value="2">一発の衝撃（衝突）</option>
+        <option value="3">脈動</option>
+      </select>
+    </label>
+    <label>強さ <input type="range" id="vibStrength" min="0" max="255" value="120"> <span id="vibStrengthLabel" class="num">120</span></label>
+  </div>
+  <div class="row">
+    <button id="btnVib" disabled>振動させる（0.5秒）</button>
+    <button id="btnVibStop" class="sub" disabled>止める</button>
+  </div>
+</section>
+
+<section id="sec-report">
+  <h2><span class="step">5</span>結果の記録</h2>
+  <p class="hint">端末ごとの確認表に貼り付けるためのテキストです。担当者名やメモを書き足してからコピーしてください。</p>
+  <div class="row">
+    <label>端末のメモ（番号・持ち主など） <input type="text" id="devNote" style="font:inherit;padding:8px;min-height:44px;border-radius:6px;border:1px solid var(--line);background:var(--panel);color:var(--text);width:260px;max-width:100%"></label>
+  </div>
+  <div class="row" style="margin-top:8px">
+    <label><input type="checkbox" id="chkSound"> イヤホンで音が聞こえた</label>
+    <label><input type="checkbox" id="chkVib"> 振動を手で感じた</label>
+  </div>
+  <div class="row" style="margin-top:8px">
+    <button id="btnReport">結果をまとめる</button>
+    <button id="btnCopy" class="sub">コピーする</button>
+  </div>
+  <textarea id="report" readonly></textarea>
+</section>
+
+<section>
+  <details>
+    <summary>設定（ハンドルの値）</summary>
+    <p class="hint">学校の旋盤（サイダ ボルテック）の値を最初から入れています。エンコーダーの回転方向が逆のときは「逆にする」に印を付けてください。</p>
+    <table id="cfgTable"></table>
+  </details>
+</section>
+
+</main>
+
+<script>
+"use strict";
+
+/* ---------- 通信の決まり（設計書 4章と同じ） ---------- */
+const BLE_SERVICE = "a5f0c000-1d2e-4b7a-9c31-56c7e8a4f001";
+const BLE_STATE   = "a5f0c000-1d2e-4b7a-9c31-56c7e8a4f002";
+const BLE_VIB     = "a5f0c000-1d2e-4b7a-9c31-56c7e8a4f003";
+const STATE_LEN = 16;          // ハンドル状態のバイト数
+const USB_HEAD_IN = 0xA5;      // ESP32 → タブレット の先頭バイト
+const USB_HEAD_OUT = 0x5A;     // タブレット → ESP32 の先頭バイト
+const USB_BAUD = 115200;
+const RPM_MAX = 4000;
+
+/* ---------- ハンドルの設定（サイダ ボルテック） ---------- */
+const AXES = [
+  { key: "carriage", name: "往復台（大ハンドル）", dir: "Z・縦送り",  grads: 110, perGrad: 0.2,  labelEvery: 10, dia: false, mark: "0.2" },
+  { key: "cross",    name: "横送り",              dir: "X・切込み",  grads: 200, perGrad: 0.05, labelEvery: 10, dia: true,  mark: "0.05DIA" },
+  { key: "compound", name: "刃物送り台",          dir: "Z・細かい送り", grads: 150, perGrad: 0.02, labelEvery: 25, dia: false, mark: "0.02" },
+];
+const cfg = { cpr: 2400, invert: [false, false, false] };  // 600P/R × 4逓倍
+
+/* ---------- データの読み取り（テストからも使えるよう外に出す） ---------- */
+function parseState(bytes) {
+  if (!bytes || bytes.length < STATE_LEN) return null;
+  const dv = new DataView(bytes.buffer, bytes.byteOffset, STATE_LEN);
+  return {
+    counts: [dv.getInt32(0, true), dv.getInt32(4, true), dv.getInt32(8, true)],
+    rpmRaw: dv.getUint16(12, true),
+    buttons: dv.getUint8(14),
+    seq: dv.getUint8(15),
+  };
+}
+
+function xorOf(bytes, start, end) {
+  let x = 0;
+  for (let i = start; i < end; i++) x ^= bytes[i];
+  return x;
+}
+
+// USB で届いたバイト列から、先頭 0xA5 ＋ 16バイト ＋ XOR の枠を取り出す
+function makeUsbReader(onState, onBad) {
+  let buf = new Uint8Array(0);
+  return function push(chunk) {
+    const merged = new Uint8Array(buf.length + chunk.length);
+    merged.set(buf, 0);
+    merged.set(chunk, buf.length);
+    buf = merged;
+    let i = 0;
+    const frameLen = 1 + STATE_LEN + 1;
+    while (buf.length - i >= frameLen) {
+      if (buf[i] !== USB_HEAD_IN) { i++; continue; }
+      const body = buf.subarray(i + 1, i + 1 + STATE_LEN);
+      if (xorOf(buf, i + 1, i + 1 + STATE_LEN) === buf[i + 1 + STATE_LEN]) {
+        onState(parseState(body.slice()));
+        i += frameLen;
+      } else {
+        onBad();
+        i++;
+      }
+    }
+    buf = buf.slice(i);
+  };
+}
+
+function rpmFromRaw(raw) {
+  if (raw <= 40) return 0;
+  return Math.min(RPM_MAX, Math.round((raw - 40) / (4095 - 40) * RPM_MAX));
+}
+
+function buildVibCommand(target, strength, pattern, durationMs) {
+  const b = new Uint8Array(5);
+  b[0] = target; b[1] = strength; b[2] = pattern;
+  b[3] = durationMs & 0xFF; b[4] = (durationMs >> 8) & 0xFF;
+  return b;
+}
+
+function usbFrameOut(cmd) {
+  const f = new Uint8Array(cmd.length + 2);
+  f[0] = USB_HEAD_OUT;
+  f.set(cmd, 1);
+  f[f.length - 1] = xorOf(cmd, 0, cmd.length);
+  return f;
+}
+
+/* ---------- 画面の要素 ---------- */
+const $ = (id) => document.getElementById(id);
+const env = {};  // 結果の記録に使う
+
+/* 1. 端末のチェック */
+function browserName() {
+  const ua = navigator.userAgent;
+  const m = ua.match(/Edg\/([\d.]+)/) || null;
+  if (m) return "Microsoft Edge " + m[1];
+  const c = ua.match(/Chrome\/([\d.]+)/);
+  if (c) return "Google Chrome（または Chromium 系）" + c[1];
+  return ua;
+}
+
+function osName() {
+  const ua = navigator.userAgent;
+  if (/Windows NT 10/.test(ua)) return "Windows 10 / 11";
+  if (/Windows/.test(ua)) return "Windows（古い版）";
+  if (/CrOS/.test(ua)) return "ChromeOS";
+  if (/Android/.test(ua)) return "Android";
+  if (/iPad|iPhone|Macintosh/.test(ua)) return "iPadOS / macOS";
+  return "不明";
+}
+
+async function checkEnv() {
+  const rows = [];
+  const add = (label, state, text, hint) => {
+    rows.push({ label, state, text, hint });
+    env[label] = (state === "ok" ? "○ " : state === "warn" ? "△ " : "× ") + text;
+  };
+
+  add("ブラウザ", "ok", browserName(), "");
+  add("OS", /Windows/.test(navigator.userAgent) ? "ok" : "warn", osName(), "このテストは Windows タブレットを想定しています。");
+  add("ページの開き方", "ok", location.protocol === "file:" ? "ファイルとして開いている（ネットワークなし）" : location.protocol + "//" + location.host, "");
+  add("安全なページとして扱われているか", window.isSecureContext ? "ok" : "ng",
+      window.isSecureContext ? "はい" : "いいえ",
+      "USB・Bluetooth の機能は安全なページでしか使えません。ファイルを Edge で直接開いてください。");
+
+  const hasSerial = "serial" in navigator;
+  add("USB の接続機能（Web Serial）", hasSerial ? "ok" : "ng", hasSerial ? "使える" : "使えない",
+      "Edge か Chrome で開いてください。それでも使えない場合は、学校の設定で止められている可能性があります（ICT 担当に確認）。");
+
+  let bleText = "使えない", bleState = "ng";
+  if ("bluetooth" in navigator) {
+    bleText = "機能はある"; bleState = "ok";
+    if (navigator.bluetooth.getAvailability) {
+      try {
+        const avail = await navigator.bluetooth.getAvailability();
+        if (!avail) { bleText = "機能はあるが、Bluetooth がオフか、使えない"; bleState = "warn"; }
+        else bleText = "使える（Bluetooth はオン）";
+      } catch (e) { /* 調べられない端末もある */ }
+    }
+  }
+  add("Bluetooth の接続機能（Web Bluetooth）", bleState, bleText,
+      "Windows の設定で Bluetooth をオンにしてください。ファイルとして開いたページでは使えない端末もあります。その場合は USB でつなぐか、設計書 2.2 の「アプリとしてインストール」を使います。");
+
+  const hasAudio = !!(window.AudioContext || window.webkitAudioContext);
+  add("音の合成（Web Audio）", hasAudio ? "ok" : "ng", hasAudio ? "使える" : "使えない", "");
+  add("画面の大きさ", "ok", window.innerWidth + " × " + window.innerHeight + "（タッチ：" + (navigator.maxTouchPoints > 0 ? "あり" : "なし") + "）", "");
+
+  const t = $("envTable");
+  t.innerHTML = "";
+  for (const r of rows) {
+    const tr = document.createElement("tr");
+    const th = document.createElement("th"); th.textContent = r.label;
+    const td = document.createElement("td");
+    const badge = document.createElement("span");
+    badge.className = "badge " + r.state;
+    badge.textContent = r.state === "ok" ? "○" : r.state === "warn" ? "△" : "×";
+    td.appendChild(badge);
+    td.appendChild(document.createTextNode(" " + r.text));
+    if (r.state !== "ok" && r.hint) {
+      const p = document.createElement("div"); p.className = "hint"; p.textContent = r.hint;
+      td.appendChild(p);
+    }
+    tr.appendChild(th); tr.appendChild(td); t.appendChild(tr);
+  }
+}
+
+/* 2. 音のテスト（耳を守るため、最大でも 0.3 に制限） */
+const MAX_GAIN = 0.3;
+let audioCtx = null;
+function audio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === "suspended") audioCtx.resume();
+  return audioCtx;
+}
+function masterGain() { return MAX_GAIN * Number($("vol").value) / 100; }
+
+function noiseBuffer(ctx, seconds) {
+  const len = Math.floor(ctx.sampleRate * seconds);
+  const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+  return buf;
+}
+
+function playCut() {
+  const ctx = audio(), t0 = ctx.currentTime, dur = 1.6;
+  const out = ctx.createGain();
+  out.gain.setValueAtTime(0, t0);
+  out.gain.linearRampToValueAtTime(masterGain(), t0 + 0.08);
+  out.gain.setValueAtTime(masterGain(), t0 + dur - 0.2);
+  out.gain.linearRampToValueAtTime(0, t0 + dur);
+  out.connect(ctx.destination);
+
+  // 主軸のうなり（1000 min⁻¹ 程度を想定した低い音）
+  const hum = ctx.createOscillator();
+  hum.type = "sawtooth"; hum.frequency.value = 95;
+  const humGain = ctx.createGain(); humGain.gain.value = 0.25;
+  const humLp = ctx.createBiquadFilter(); humLp.type = "lowpass"; humLp.frequency.value = 400;
+  hum.connect(humLp).connect(humGain).connect(out);
+
+  // 切削の「シャー」
+  const n = ctx.createBufferSource(); n.buffer = noiseBuffer(ctx, dur);
+  const bp = ctx.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = 3200; bp.Q.value = 1.2;
+  const nGain = ctx.createGain(); nGain.gain.value = 0.8;
+  n.connect(bp).connect(nGain).connect(out);
+
+  hum.start(t0); n.start(t0);
+  hum.stop(t0 + dur); n.stop(t0 + dur);
+  $("soundResult").textContent = "切削音を鳴らしました。聞こえたら、5 の「イヤホンで音が聞こえた」に印を付けてください。";
+}
+
+function playImpact() {
+  const ctx = audio(), t0 = ctx.currentTime;
+  const out = ctx.createGain();
+  out.gain.setValueAtTime(masterGain(), t0);
+  out.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.5);
+  out.connect(ctx.destination);
+  const o = ctx.createOscillator(); o.type = "triangle";
+  o.frequency.setValueAtTime(180, t0);
+  o.frequency.exponentialRampToValueAtTime(60, t0 + 0.4);
+  o.connect(out);
+  const n = ctx.createBufferSource(); n.buffer = noiseBuffer(ctx, 0.15);
+  const lp = ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 1500;
+  n.connect(lp).connect(out);
+  o.start(t0); n.start(t0); o.stop(t0 + 0.5);
+  $("soundResult").textContent = "衝撃音を鳴らしました。";
+}
+
+/* 3. 接続 */
+let link = null;          // { type: "usb" | "ble", send(cmd), close() }
+const offset = [0, 0, 0]; // 「0 に戻す」用
+let last = null;
+const stats = { recv: 0, lost: 0, bad: 0, lastSeq: null, lastTime: null, intervals: [] };
+
+function resetStats() {
+  stats.recv = 0; stats.lost = 0; stats.bad = 0; stats.lastSeq = null; stats.lastTime = null; stats.intervals = [];
+}
+
+function setConnected(type, label) {
+  $("status").textContent = "接続中：" + label;
+  $("status").style.color = "var(--ok)";
+  $("connError").textContent = "";
+  for (const id of ["btnDisconnect", "btnZero", "btnVib", "btnVibStop"]) $(id).disabled = false;
+  for (const id of ["btnUsb", "btnBle"]) $(id).disabled = true;
+  env["接続"] = (type === "usb" ? "USB" : "Bluetooth") + " でつながった（" + label + "）";
+}
+
+function setDisconnected(msg) {
+  link = null;
+  $("status").textContent = msg || "未接続";
+  $("status").style.color = "";
+  for (const id of ["btnDisconnect", "btnZero", "btnVib", "btnVibStop"]) $(id).disabled = true;
+  $("btnUsb").disabled = !("serial" in navigator);
+  $("btnBle").disabled = !("bluetooth" in navigator);
+  document.body.classList.remove("estop");
+}
+
+function showError(where, e) {
+  const name = e && e.name ? e.name : "";
+  let msg = where + "：" + (e && e.message ? e.message : String(e));
+  if (name === "NotFoundError") msg = where + "：機器が選ばれませんでした（キャンセル、または見つからない）。";
+  if (name === "SecurityError") msg += " → この開き方では使えない可能性があります。USB でつなぐか、設計書 2.2 の方法を試してください。";
+  if (name === "NetworkError") msg += " → ユニットの電源と、ほかの端末がつないでいないかを確かめてください。";
+  $("connError").textContent = msg;
+  env["接続エラー"] = msg;
+}
+
+function onState(s) {
+  if (!s) return;
+  const now = performance.now();
+  stats.recv++;
+  if (stats.lastSeq !== null) stats.lost += (s.seq - stats.lastSeq - 1 + 256) & 0xFF;
+  stats.lastSeq = s.seq;
+  if (stats.lastTime !== null) {
+    stats.intervals.push(now - stats.lastTime);
+    if (stats.intervals.length > 50) stats.intervals.shift();
+  }
+  stats.lastTime = now;
+  last = s;
+}
+
+async function connectUsb() {
+  try {
+    const port = await navigator.serial.requestPort();
+    await port.open({ baudRate: USB_BAUD });
+    // ESP32 開発ボードが勝手にリセットされないよう、DTR と RTS をそろえておく
+    try { await port.setSignals({ dataTerminalReady: false, requestToSend: false }); } catch (e) {}
+    resetStats();
+    const reader = port.readable.getReader();
+    const push = makeUsbReader(onState, () => { stats.bad++; });
+    let closing = false;
+    link = {
+      type: "usb",
+      async send(cmd) {
+        const w = port.writable.getWriter();
+        try { await w.write(usbFrameOut(cmd)); } finally { w.releaseLock(); }
+      },
+      async close() {
+        closing = true;
+        try { await reader.cancel(); } catch (e) {}
+        try { reader.releaseLock(); } catch (e) {}
+        try { await port.close(); } catch (e) {}
+      },
+    };
+    const info = port.getInfo ? port.getInfo() : {};
+    setConnected("usb", "USB" + (info.usbVendorId ? "（VID " + info.usbVendorId.toString(16).padStart(4, "0") + " / PID " + (info.usbProductId || 0).toString(16).padStart(4, "0") + "）" : ""));
+    (async () => {
+      try {
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          if (value) push(value);
+        }
+      } catch (e) {
+        if (!closing) showError("USB の読み取り", e);
+      }
+      if (!closing) { try { await port.close(); } catch (e) {} setDisconnected("切断されました（USB）"); }
+    })();
+  } catch (e) {
+    showError("USB でつなぐ", e);
+  }
+}
+
+async function connectBle() {
+  try {
+    const device = await navigator.bluetooth.requestDevice({
+      filters: [{ services: [BLE_SERVICE] }, { namePrefix: "VL-" }],
+      optionalServices: [BLE_SERVICE],
+    });
+    const server = await device.gatt.connect();
+    const svc = await server.getPrimaryService(BLE_SERVICE);
+    const stateChar = await svc.getCharacteristic(BLE_STATE);
+    const vibChar = await svc.getCharacteristic(BLE_VIB);
+    resetStats();
+    stateChar.addEventListener("characteristicvaluechanged", (ev) => {
+      const v = ev.target.value;
+      onState(parseState(new Uint8Array(v.buffer, v.byteOffset, v.byteLength)));
+    });
+    await stateChar.startNotifications();
+    let closing = false;
+    device.addEventListener("gattserverdisconnected", () => {
+      if (!closing) setDisconnected("切断されました（Bluetooth）");
+    });
+    link = {
+      type: "ble",
+      async send(cmd) {
+        if (vibChar.writeValueWithoutResponse) await vibChar.writeValueWithoutResponse(cmd);
+        else await vibChar.writeValue(cmd);
+      },
+      async close() { closing = true; try { device.gatt.disconnect(); } catch (e) {} },
+    };
+    setConnected("ble", device.name || "名前なし");
+  } catch (e) {
+    showError("Bluetooth でつなぐ", e);
+  }
+}
+
+/* 表示：ダイヤル */
+const dials = [];
+function buildAxes() {
+  const wrap = $("axes");
+  AXES.forEach((ax, i) => {
+    const d = document.createElement("div");
+    d.className = "axis";
+    d.innerHTML =
+      '<h3>' + ax.name + '</h3>' +
+      '<div class="hint">' + ax.dir + '／1目盛り ' + ax.mark + '／1回転 ' + ax.grads + '目盛り</div>' +
+      '<canvas width="440" height="440"></canvas>' +
+      '<div>目盛り <span class="big" data-k="grad">—</span></div>' +
+      '<div data-k="mm" class="num"></div>' +
+      '<div class="hint num">カウント <span data-k="count">—</span></div>';
+    wrap.appendChild(d);
+    dials.push({
+      canvas: d.querySelector("canvas"),
+      grad: d.querySelector('[data-k="grad"]'),
+      mm: d.querySelector('[data-k="mm"]'),
+      count: d.querySelector('[data-k="count"]'),
+    });
+    drawDial(i, 0);
+  });
+}
+
+function cssVar(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
+function drawDial(i, gradsFloat) {
+  const ax = AXES[i], c = dials[i].canvas, g = c.getContext("2d");
+  const W = c.width, R = W / 2 - 16, cx = W / 2, cy = W / 2;
+  g.clearRect(0, 0, W, W);
+  g.fillStyle = cssVar("--dial");
+  g.beginPath(); g.arc(cx, cy, R, 0, Math.PI * 2); g.fill();
+  g.strokeStyle = cssVar("--text"); g.fillStyle = cssVar("--text");
+  g.lineWidth = 2;
+  g.font = "bold 22px sans-serif"; g.textAlign = "center"; g.textBaseline = "middle";
+  const step = Math.PI * 2 / ax.grads;
+  const rot = -gradsFloat * step;  // ダイヤルが回り、上の基準線は動かない
+  for (let k = 0; k < ax.grads; k++) {
+    const a = rot + k * step - Math.PI / 2;
+    const major = k % ax.labelEvery === 0;
+    const half = !major && k % (ax.labelEvery / 2) === 0;
+    const len = major ? 30 : half ? 20 : 12;
+    g.lineWidth = major ? 3 : 1.5;
+    g.beginPath();
+    g.moveTo(cx + Math.cos(a) * R, cy + Math.sin(a) * R);
+    g.lineTo(cx + Math.cos(a) * (R - len), cy + Math.sin(a) * (R - len));
+    g.stroke();
+    if (major) {
+      const label = String(Number((k * ax.perGrad).toFixed(2)));
+      g.fillText(label, cx + Math.cos(a) * (R - 54), cy + Math.sin(a) * (R - 54));
+    }
+  }
+  // 基準線（上）
+  g.strokeStyle = cssVar("--ng"); g.lineWidth = 4;
+  g.beginPath(); g.moveTo(cx, cy - R - 10); g.lineTo(cx, cy - R + 40); g.stroke();
+  g.fillStyle = cssVar("--muted"); g.font = "bold 24px sans-serif";
+  g.fillText(ax.mark, cx, cy + 10);
+}
+
+function render() {
+  if (last) {
+    for (let i = 0; i < 3; i++) {
+      const ax = AXES[i];
+      let cnt = last.counts[i] - offset[i];
+      if (cfg.invert[i]) cnt = -cnt;
+      const revs = cnt / cfg.cpr;
+      const gradsTotal = revs * ax.grads;
+      const gradInRev = ((gradsTotal % ax.grads) + ax.grads) % ax.grads;
+      const moveMm = gradsTotal * ax.perGrad;
+      dials[i].grad.textContent = gradInRev.toFixed(1);
+      dials[i].count.textContent = cnt;
+      dials[i].mm.textContent = ax.dia
+        ? "直径の変化 " + moveMm.toFixed(3) + " mm（刃先の移動 " + (moveMm / 2).toFixed(3) + " mm）"
+        : "刃先の移動 " + moveMm.toFixed(3) + " mm";
+      drawDial(i, gradsTotal);
+    }
+    const rpm = rpmFromRaw(last.rpmRaw);
+    $("rpm").textContent = rpm;
+    $("rpmRaw").textContent = last.rpmRaw;
+    $("rpmBar").style.width = (rpm / RPM_MAX * 100) + "%";
+    const b = last.buttons;
+    $("lampStart").className = "lamp" + (b & 1 ? " on-start" : "");
+    $("lampStop").className = "lamp" + (b & 2 ? " on-stop" : "");
+    $("lampEstop").className = "lamp" + (b & 4 ? " on-estop" : "");
+    $("lampEstop").textContent = b & 4 ? "非常停止中" : "非常停止";
+    document.body.classList.toggle("estop", !!(b & 4));
+  }
+  $("stRecv").textContent = stats.recv;
+  $("stLost").textContent = stats.lost;
+  $("stBad").textContent = stats.bad;
+  if (stats.intervals.length) {
+    const avg = stats.intervals.reduce((a, b) => a + b, 0) / stats.intervals.length;
+    const max = Math.max(...stats.intervals);
+    const el = $("stInterval");
+    el.textContent = "平均 " + avg.toFixed(1) + " ms／最大 " + max.toFixed(1) + " ms" + (max > 50 ? "　⚠ 50ms を超えた。遅れを感じる可能性あり" : "");
+    el.className = "num" + (max > 50 ? " warn" : "");
+    env["届く間隔"] = "平均 " + avg.toFixed(1) + " ms／最大 " + max.toFixed(1) + " ms";
+  }
+  requestAnimationFrame(render);
+}
+
+/* 4. 振動 */
+async function sendVib(durationMs, stop) {
+  if (!link) return;
+  const cmd = stop
+    ? buildVibCommand(0, 0, 0, 0)
+    : buildVibCommand(Number($("vibTarget").value), Number($("vibStrength").value), Number($("vibPattern").value), durationMs);
+  try { await link.send(cmd); } catch (e) { showError("振動の指令", e); }
+}
+
+/* 5. 結果の記録 */
+function makeReport() {
+  const lines = [];
+  lines.push("バーチャル旋盤 接続テスト結果");
+  lines.push("日時：" + new Date().toLocaleString("ja-JP"));
+  if ($("devNote").value) lines.push("端末メモ：" + $("devNote").value);
+  for (const [k, v] of Object.entries(env)) lines.push(k + "：" + v);
+  if (stats.recv) lines.push("受信 " + stats.recv + " 回／取りこぼし " + stats.lost + " 回／USB 読み取りエラー " + stats.bad + " 回");
+  lines.push("イヤホンの音：" + ($("chkSound").checked ? "聞こえた" : "未確認"));
+  lines.push("振動：" + ($("chkVib").checked ? "感じた" : "未確認"));
+  $("report").value = lines.join("\n");
+}
+
+async function copyReport() {
+  makeReport();
+  const ta = $("report");
+  try {
+    await navigator.clipboard.writeText(ta.value);
+  } catch (e) {
+    ta.select();
+    document.execCommand("copy");
+  }
+}
+
+/* 設定の表 */
+function buildCfg() {
+  const t = $("cfgTable");
+  const tr0 = document.createElement("tr");
+  tr0.innerHTML = '<th>エンコーダー1回転のカウント</th><td><input type="number" id="cfgCpr" min="4" step="4" value="' + cfg.cpr + '"> <span class="hint">600P/R を4逓倍で読むと 2400</span></td>';
+  t.appendChild(tr0);
+  AXES.forEach((ax, i) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = "<th>" + ax.name + "</th><td>1目盛り " + ax.mark + " mm／1回転 " + ax.grads + " 目盛り（" +
+      Number((ax.grads * ax.perGrad).toFixed(2)) + " mm" + (ax.dia ? "、直径で" : "") + "）　" +
+      '<label><input type="checkbox" data-inv="' + i + '"> 回転方向を逆にする</label></td>';
+    t.appendChild(tr);
+  });
+  $("cfgCpr").addEventListener("change", (e) => { const v = Number(e.target.value); if (v > 0) cfg.cpr = v; });
+  t.querySelectorAll("[data-inv]").forEach((el) => el.addEventListener("change", (e) => { cfg.invert[Number(e.target.dataset.inv)] = e.target.checked; }));
+}
+
+/* ---------- 起動 ---------- */
+function init() {
+  buildAxes();
+  buildCfg();
+  checkEnv();
+  setDisconnected();
+  $("vol").addEventListener("input", () => { $("volLabel").textContent = $("vol").value + "%"; });
+  $("vibStrength").addEventListener("input", () => { $("vibStrengthLabel").textContent = $("vibStrength").value; });
+  $("btnCut").addEventListener("click", playCut);
+  $("btnImpact").addEventListener("click", playImpact);
+  $("btnUsb").addEventListener("click", connectUsb);
+  $("btnBle").addEventListener("click", connectBle);
+  $("btnDisconnect").addEventListener("click", async () => { if (link) { await link.close(); } setDisconnected(); });
+  $("btnZero").addEventListener("click", () => { if (last) for (let i = 0; i < 3; i++) offset[i] = last.counts[i]; });
+  $("btnVib").addEventListener("click", () => sendVib(500, false));
+  $("btnVibStop").addEventListener("click", () => sendVib(0, true));
+  $("btnReport").addEventListener("click", makeReport);
+  $("btnCopy").addEventListener("click", copyReport);
+  requestAnimationFrame(render);
+}
+
+window.VL = { parseState, makeUsbReader, rpmFromRaw, buildVibCommand, usbFrameOut, xorOf, onState, stats, AXES, cfg, getLast: () => last };
+init();
+</script>
+</body>
+</html>
