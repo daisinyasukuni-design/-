@@ -192,7 +192,7 @@
   <table style="margin-top:16px">
     <tr><th>受信した回数</th><td class="num" id="stRecv">0</td></tr>
     <tr><th>取りこぼした回数</th><td class="num" id="stLost">0</td></tr>
-    <tr><th>届く間隔（直近50回）</th><td class="num" id="stInterval">—</td></tr>
+    <tr><th>届く間隔（直近50回）<div class="hint" style="font-weight:400">USB では数回分がまとめて届くことがあり、0ms と 40ms のように揺れて見えることがある。平均が 20ms 前後なら問題ない。</div></th><td class="num" id="stInterval">—</td></tr>
     <tr><th>USB の読み取りエラー</th><td class="num" id="stBad">0</td></tr>
   </table>
 </section>
@@ -481,6 +481,8 @@ function playImpact() {
 let link = null;          // { type: "usb" | "ble", send(cmd), close() }
 const offset = [0, 0, 0]; // 「0 に戻す」用
 let last = null;
+let dirty = false;         // 新しいデータが届いた・設定を変えたときだけ描き直す
+let drawCount = 0;
 const stats = { recv: 0, lost: 0, bad: 0, lastSeq: null, lastTime: null, intervals: [] };
 
 function resetStats() {
@@ -528,6 +530,7 @@ function onState(s) {
   }
   stats.lastTime = now;
   last = s;
+  dirty = true;
 }
 
 async function connectUsb() {
@@ -538,7 +541,7 @@ async function connectUsb() {
     try { await port.setSignals({ dataTerminalReady: false, requestToSend: false }); } catch (e) {}
     resetStats();
     const reader = port.readable.getReader();
-    const push = makeUsbReader(onState, () => { stats.bad++; });
+    const push = makeUsbReader(onState, () => { stats.bad++; dirty = true; });
     let closing = false;
     link = {
       type: "usb",
@@ -667,6 +670,9 @@ function drawDial(i, gradsFloat) {
 }
 
 function render() {
+  if (!dirty) { requestAnimationFrame(render); return; }
+  dirty = false;
+  drawCount++;
   if (last) {
     for (let i = 0; i < 3; i++) {
       const ax = AXES[i];
@@ -754,8 +760,8 @@ function buildCfg() {
       '<label><input type="checkbox" data-inv="' + i + '"> 回転方向を逆にする</label></td>';
     t.appendChild(tr);
   });
-  $("cfgCpr").addEventListener("change", (e) => { const v = Number(e.target.value); if (v > 0) cfg.cpr = v; });
-  t.querySelectorAll("[data-inv]").forEach((el) => el.addEventListener("change", (e) => { cfg.invert[Number(e.target.dataset.inv)] = e.target.checked; }));
+  $("cfgCpr").addEventListener("change", (e) => { const v = Number(e.target.value); if (v > 0) { cfg.cpr = v; dirty = true; } });
+  t.querySelectorAll("[data-inv]").forEach((el) => el.addEventListener("change", (e) => { cfg.invert[Number(e.target.dataset.inv)] = e.target.checked; dirty = true; }));
 }
 
 /* ---------- 起動 ---------- */
@@ -771,7 +777,7 @@ function init() {
   $("btnUsb").addEventListener("click", connectUsb);
   $("btnBle").addEventListener("click", connectBle);
   $("btnDisconnect").addEventListener("click", async () => { if (link) { await link.close(); } setDisconnected(); });
-  $("btnZero").addEventListener("click", () => { if (last) for (let i = 0; i < 3; i++) offset[i] = last.counts[i]; });
+  $("btnZero").addEventListener("click", () => { if (last) { for (let i = 0; i < 3; i++) offset[i] = last.counts[i]; dirty = true; } });
   $("btnVib").addEventListener("click", () => sendVib(500, false));
   $("btnVibStop").addEventListener("click", () => sendVib(0, true));
   $("btnReport").addEventListener("click", makeReport);
@@ -779,7 +785,7 @@ function init() {
   requestAnimationFrame(render);
 }
 
-window.VL = { parseState, makeUsbReader, rpmFromRaw, buildVibCommand, usbFrameOut, xorOf, onState, stats, AXES, cfg, getLast: () => last };
+window.VL = { parseState, makeUsbReader, rpmFromRaw, buildVibCommand, usbFrameOut, xorOf, onState, stats, AXES, cfg, getLast: () => last, getDrawCount: () => drawCount };
 init();
 </script>
 </body>
